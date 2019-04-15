@@ -113,6 +113,7 @@ import org.springframework.util.StringUtils;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  */
 @SuppressWarnings("serial")
+// 综合上面所有功能，主要是对bean注册后的处理
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory
 		implements ConfigurableListableBeanFactory, BeanDefinitionRegistry, Serializable {
 
