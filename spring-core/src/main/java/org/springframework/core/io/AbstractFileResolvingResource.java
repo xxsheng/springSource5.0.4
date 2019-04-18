@@ -233,6 +233,11 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
 		return con.getLastModified();
 	}
 
+	@Override
+	public InputStream getInputStream() throws IOException {
+		return null;
+	}
+
 	/**
 	 * Customize the given {@link URLConnection}, obtained in the course of an
 	 * {@link #exists()}, {@link #contentLength()} or {@link #lastModified()} call.
