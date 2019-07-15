@@ -13,6 +13,7 @@ public class MyTest {
 
 		User bean = ac.getBean(User.class);
 		System.out.println(bean);
+		System.out.println(MyTest.class.getClassLoader().getClass().getClassLoader());
 	}
 
 

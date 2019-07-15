@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.Resource;
+import test.Son;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,5 +39,10 @@ public class BeanFactoryTest {
 
 	static public void test(){
 		System.out.println("---------------------");
+	}
+
+	@Test
+	public void test1() {
+		Son son = new Son(1);
 	}
 }
