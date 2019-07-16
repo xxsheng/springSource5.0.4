@@ -11,11 +11,16 @@ public class Son extends Father {
 		this.ids = ids;
 	}
 
-//	public Son() {
-//	}
+	public Son() {
+	}
 
 	public Son( int ids) {
 		super(ids);
 		this.ids = ids;
+	}
+
+	@Override
+	protected void test1() {
+		System.out.println("---son test1---");
 	}
 }

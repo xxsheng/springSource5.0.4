@@ -129,6 +129,7 @@ public class DefaultDocumentLoader implements DocumentLoader {
 			throws ParserConfigurationException {
 
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
+		// entityResolver作用是当网络不可用时，提供项目本身寻找dtd的方法
 		if (entityResolver != null) {
 			docBuilder.setEntityResolver(entityResolver);
 		}
