@@ -4,6 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
-	<bean name="myTestBean1,myTestBean2" class="domain.MyTestBean" />
+	<bean name="myTestBean1,myTestBean1,myTestBean2" class="domain.MyTestBean" />
 
 </beans>
