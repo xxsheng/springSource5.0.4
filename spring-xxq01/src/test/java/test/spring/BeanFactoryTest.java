@@ -23,6 +23,7 @@ public class BeanFactoryTest {
 
 //		MyTestBean mb = (MyTestBean) bf.getBean(MyTestBean.class);
 		MyTestBean mb = (MyTestBean) bf.getBean("myTestBean2");
+		System.out.println(mb.getTestStr());
 		assertEquals("testStr",mb.getTestStr());
 
 		Resource isr = new ClassPathResource("beanFactoryTest.xml");
