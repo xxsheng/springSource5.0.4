@@ -532,7 +532,9 @@ public class BeanDefinitionParserDelegate {
 			// 解析元素据-->bean的meta数据
 			parseMetaElements(ele, bd);
 
+			// 解析lookup-method
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
+			// 解析replaced-method
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
 
 			parseConstructorArgElements(ele, bd);
@@ -758,13 +760,17 @@ public class BeanDefinitionParserDelegate {
 	 * Parse lookup-override sub-elements of the given bean element.
 	 */
 	public void parseLookupOverrideSubElements(Element beanEle, MethodOverrides overrides) {
+		// 获取bean下面所有子节点
 		NodeList nl = beanEle.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
+			// 仅当在spring默认bean的子元素下且为lookup-method时有效
 			if (isCandidateElement(node) && nodeNameEquals(node, LOOKUP_METHOD_ELEMENT)) {
 				Element ele = (Element) node;
 				String methodName = ele.getAttribute(NAME_ATTRIBUTE);
+				// 获取要修饰的方法
 				String beanRef = ele.getAttribute(BEAN_ELEMENT);
+				// 获取配置返回的bean
 				LookupOverride override = new LookupOverride(methodName, beanRef);
 				override.setSource(extractSource(ele));
 				overrides.addOverride(override);
