@@ -9,4 +9,18 @@
 
 	<bean id="techer" class="test.lookup.bean.Techer"/>
 	<bean id="student" class="test.lookup.bean.Student"/>
+
+	<bean id="testMethodReplacer" class="test.replace.TestMethodReplacer"/>
+
+	<bean id="testChangeMethod" class="test.replace.TestChangeMethod">
+		<replaced-method name="changeMe" replacer="testMethodReplacer">
+			<arg-type match=""/>
+		</replaced-method>
+		<constructor-arg>
+			<value>xxq</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>xxq</value>
+		</constructor-arg>
+	</bean>
 </beans>
