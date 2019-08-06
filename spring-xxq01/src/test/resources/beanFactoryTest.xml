@@ -4,7 +4,19 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<description>sss</description>
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
-	<bean name="myTestBean1,myTestBean1,myTestBean2" class="domain.MyTestBean" >
+	<bean  class="domain.MyTestBean" >
 		<meta key="testStr" value="123"/>
+	</bean>
+
+	<bean id="myTestBean" class="domain.MyTestBean" >
+		<property name="testStr">
+			<value>xxq</value>
+
+		</property>
+
+	</bean>
+
+	<bean id="myTestBeanQulifier" class="domain.MyTestBean" >
+		<qualifier type="org.springframework.beans.factory.annotation.Qualifier" value="qf"/>
 	</bean>
 </beans>

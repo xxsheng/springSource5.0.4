@@ -440,7 +440,7 @@ public class BeanDefinitionParserDelegate {
 			// 检查name是否有多个，有就加入到userNames中。后续再观看如何使用
 			checkNameUniqueness(beanName, aliases, ele);
 		}
-
+		// 解析bean的属性 --非常重要
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -545,6 +545,7 @@ public class BeanDefinitionParserDelegate {
 			parseConstructorArgElements(ele, bd);
 			// 解析子元素property
 			parsePropertyElements(ele, bd);
+			// 解析qualifier -- 未仔细看
 			parseQualifierElements(ele, bd);
 
 			bd.setResource(this.readerContext.getResource());
@@ -744,6 +745,7 @@ public class BeanDefinitionParserDelegate {
 		NodeList nl = beanEle.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
+			// 遍历子节点，此处只解析property元素
 			if (isCandidateElement(node) && nodeNameEquals(node, PROPERTY_ELEMENT)) {
 				parsePropertyElement((Element) node, bd);
 			}
@@ -908,10 +910,12 @@ public class BeanDefinitionParserDelegate {
 		}
 		this.parseState.push(new PropertyEntry(propertyName));
 		try {
+			// 不允许多次对同一属性配置
 			if (bd.getPropertyValues().contains(propertyName)) {
 				error("Multiple 'property' definitions for property '" + propertyName + "'", ele);
 				return;
 			}
+			// 解析property子元素，通用解析
 			Object val = parsePropertyValue(ele, bd, propertyName);
 			PropertyValue pv = new PropertyValue(propertyName, val);
 			parseMetaElements(ele, pv);
