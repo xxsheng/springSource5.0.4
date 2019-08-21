@@ -202,7 +202,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
 			processAliasRegistration(ele);
 		}
-		// 对bean标签的处理
+		// 对bean标签的处理 step1
 		else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
 			processBeanDefinition(ele, delegate);
 		}
@@ -320,6 +320,8 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// 若不为空，则可能还存在默认标签的子节点属性。
 		if (bdHolder != null) {
 			// 2. 如果bdHolder不为空的情况存在默认标签的子节点下再有自定义属性，还需要再次对自定义标签进行解析
+			// 此处默认标签已经处理完毕，这里只对bean的自定义属性以及自定义标签感兴趣，内部根据自定义标签和自定义属性找到
+			// handler处理器，进行进一步的解析
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
 				// 3. 注册bdHolder
