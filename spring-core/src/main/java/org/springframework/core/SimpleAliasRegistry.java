@@ -46,16 +46,21 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	public void registerAlias(String name, String alias) {
 		Assert.hasText(name, "'name' must not be empty");
 		Assert.hasText(alias, "'alias' must not be empty");
+		// 如果beanname与alias相同的话不记录alias，并删除对应的alias，因为alias已经属于当前name，删除之前遗留的
 		if (alias.equals(name)) {
 			this.aliasMap.remove(alias);
 		}
 		else {
+			// 将当前的alias对应的bean拿出来
 			String registeredName = this.aliasMap.get(alias);
 			if (registeredName != null) {
+				// 如果对应的beanname不为空且与当前的beanname相同则直接返回，不需要注册
 				if (registeredName.equals(name)) {
 					// An existing alias - no need to re-register
 					return;
 				}
+				// 如果对应的beanname不为空且与当前的beanname不相同，则判断beanfactory配置是否允许覆盖
+				// 如果不允许则抛出异常
 				if (!allowAliasOverriding()) {
 					throw new IllegalStateException("Cannot register alias '" + alias + "' for name '" +
 							name + "': It is already registered for name '" + registeredName + "'.");
@@ -80,6 +85,19 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	 * @param alias the alias to look for
 	 * @since 4.2.1
 	 */
+	/*
+	* 	alias ---- name
+	*   1            2
+	*
+	*   3            2 情况1
+	*   3            3 情况2
+	*
+	*   3            1
+	*
+	* 如果是情况1，则需要抛出异常，因为此时3已经对应1，如果改为对应2，则1就无法找到对应的了。规则内不允许
+	*
+	* 如果是情况2，无需抛出异常，因为原先3对应1，然后更新到一个新beanname。规则内允许。
+	* */
 	public boolean hasAlias(String name, String alias) {
 		for (Map.Entry<String, String> entry : this.aliasMap.entrySet()) {
 			String registeredName = entry.getValue();

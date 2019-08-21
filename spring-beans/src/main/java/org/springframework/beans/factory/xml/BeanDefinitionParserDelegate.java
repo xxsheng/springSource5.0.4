@@ -486,12 +486,15 @@ public class BeanDefinitionParserDelegate {
 		String foundName = null;
 
 		if (StringUtils.hasText(beanName) && this.usedNames.contains(beanName)) {
+			// 查找beanname是否在useedNames里面，如果有就在后面报错。
 			foundName = beanName;
 		}
 		if (foundName == null) {
+			// 如果beanname不在useredNames里面，则查看aliases是否在usedNames里面
 			foundName = CollectionUtils.findFirstMatch(this.usedNames, aliases);
 		}
 		if (foundName != null) {
+			// 一旦查找存在则报错
 			error("Bean name '" + foundName + "' is already used in this <beans> element", beanElement);
 		}
 
