@@ -18,8 +18,8 @@ public class Main {
 
 		ApplicationContext bf = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
 		//MyTestBean myTestBean = (MyTestBean) bf.getBean("myTestBean");
-		MyTestBean3 myTestBean = (MyTestBean3) bf.getBean("myTestBean");
-		System.out.println(myTestBean);
+//		MyTestBean3 myTestBean = (MyTestBean3) bf.getBean("myTestBean");
+//		System.out.println(myTestBean);
 	}
 
 }

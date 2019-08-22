@@ -935,6 +935,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 	}
 
+	@Override
+	public void registerAlias(String name, String alias) {
+		super.registerAlias(name, alias);
+	}
+
 	/**
 	 * Only allows alias overriding if bean definition overriding is allowed.
 	 */

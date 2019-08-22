@@ -15,8 +15,11 @@
 	</bean>
 
 
-	<bean id="myTestBean" name="bean3" class="domain.MyTestBean3">
-	</bean>
+<!--	<bean id="myTestBean" name="bean3" class="domain.MyTestBean3">-->
+<!--	</bean>-->
+
+		<bean class="domain.MyTestBean3">
+		</bean>
 
 
 	<bean id="myTestBeanQulifier" class="domain.MyTestBean" >
