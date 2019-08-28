@@ -3,6 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<import resource="../ttt/beanFactoryTest1.xml" />
+	
 	<bean id="getBeanTest" class="test.lookup.bean.GetBeanTest">
 		<lookup-method bean="student" name="getBean"/>
 	</bean>

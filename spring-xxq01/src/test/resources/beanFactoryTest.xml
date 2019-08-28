@@ -8,6 +8,8 @@
 		<meta key="testStr" value="123"/>
 	</bean>-->
 
+	<!--<import resource="beanFactoryTest1.xml" />-->
+
 	<bean id="bean2" name="bean3" class="domain.MyTestBean" >
 		<property name="testStr">
 			<value>xxq</value>

@@ -21,8 +21,10 @@ public class BeanFactoryTest {
 	public void testSimpleLoad() throws IOException {
 		BeanFactory bf = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
 
+		BeanFactory bf1 = new XmlBeanFactory(new ClassPathResource("test/lookup/lookupTest1.xml"));
+
 //		MyTestBean mb = (MyTestBean) bf.getBean(MyTestBean.class);
-		MyTestBean mb = (MyTestBean) bf.getBean("myTestBean2");
+		MyTestBean mb = (MyTestBean) bf1.getBean("myTestBean2");
 		System.out.println(mb.getTestStr());
 		assertEquals("testStr",mb.getTestStr());
 
