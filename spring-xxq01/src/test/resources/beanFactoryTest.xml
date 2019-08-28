@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:myname="http://www.lexueba.com/schema/user"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
 	<description>sss</description>
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
 	<!--<bean  class="domain.MyTestBean" >
@@ -10,21 +12,24 @@
 
 	<!--<import resource="beanFactoryTest1.xml" />-->
 
-	<bean id="bean2" name="bean3" class="domain.MyTestBean" >
+	<bean id="bean2" name="bean3" class="domain.MyTestBean">
 		<property name="testStr">
 			<value>xxq</value>
 		</property>
 	</bean>
 
 
-<!--	<bean id="myTestBean" name="bean3" class="domain.MyTestBean3">-->
-<!--	</bean>-->
+	<!--	<bean id="myTestBean" name="bean3" class="domain.MyTestBean3">-->
+	<!--	</bean>-->
 
-		<bean class="domain.MyTestBean3">
-		</bean>
+	<bean class="domain.MyTestBean3">
+	</bean>
 
 
-	<bean id="myTestBeanQulifier" class="domain.MyTestBean" >
+	<bean id="myTestBeanQulifier" class="domain.MyTestBean">
 		<qualifier type="org.springframework.beans.factory.annotation.Qualifier" value="qf"/>
 	</bean>
+
+	<myname:user id="testBean" userName="aaa" email="bbb"/>
+
 </beans>

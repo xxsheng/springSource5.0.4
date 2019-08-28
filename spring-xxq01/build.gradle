@@ -15,6 +15,7 @@ dependencies {
     compile(project(":spring-context"))
     compile(project(":spring-context"))
     compile(project(":spring-aop"))
+    compile(project(":spring-core"))
     // https://mvnrepository.com/artifact/org.mybatis/mybatis
     compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
     testCompile group: 'junit', name: 'junit', version: '4.12'

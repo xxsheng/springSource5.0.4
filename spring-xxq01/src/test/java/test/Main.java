@@ -1,11 +1,8 @@
 package test;
 
-import domain.MyTestBean;
-import domain.MyTestBean3;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import test.lookup.bean.GetBeanTest;
-import test.replace.TestChangeMethod;
+import test.customtag.domain.User;
 
 public class Main {
 	public static void main(String[] args) {
@@ -20,6 +17,9 @@ public class Main {
 		//MyTestBean myTestBean = (MyTestBean) bf.getBean("myTestBean");
 //		MyTestBean3 myTestBean = (MyTestBean3) bf.getBean("myTestBean");
 //		System.out.println(myTestBean);
+
+		User testBean = (User)bf.getBean("testBean");
+		System.out.println(testBean);
 	}
 
 }
