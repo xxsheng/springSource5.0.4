@@ -1,5 +1,7 @@
 package test.jmm;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,5 +38,11 @@ public class TestJMM {
 		String name = user.getName();
 		name = "name2";
 		System.out.println(user);
+	}
+
+	@Test
+	public void test1() {
+		TestUser testUser = new TestUser(1,2);
+
 	}
 }

@@ -1,6 +1,5 @@
 package test.java8;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -53,7 +52,7 @@ public class Test {
 //		return 1;
 //	}
 
-	private static void test5(@NotNull Runnable runnable){
+	private static void test5(Runnable runnable){
 		System.out.println(Thread.currentThread().getName());
 		runnable.run();
 	}
