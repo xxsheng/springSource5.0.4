@@ -1466,11 +1466,15 @@ public class BeanDefinitionParserDelegate {
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
 		// 获取对应的命名空间 step1
+		/*
+		* 标签的解析是从命名空间的提起开始的，无论是区分spring中默认标签和自定义标签还是区分自定义标签中不同标签的处理器都是以标签所提供的命名空间为基础的，而至于
+		* 如何提取对应元素的命名空间并不需要我们亲自去实现，在org.w3c.dom.node中已经提供了方法供我们直接调用
+		* */
 		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
 		}
-		// 根据命名空间找到对应的NamespaceHandler step2
+		// 根据命名空间找到对应的NamespaceHandler step2 org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver.resolve
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
