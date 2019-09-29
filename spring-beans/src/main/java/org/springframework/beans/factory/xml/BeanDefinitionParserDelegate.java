@@ -527,7 +527,7 @@ public class BeanDefinitionParserDelegate {
 			// 创建用于承载属性的AbstractBeanDefinition类型的GenericBeanDefinition
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
-			// 硬编码解析默认bean的各种属性 --> 需要查看方法
+			// 硬编码解析默认bean的各种属性 --> **需要查看方法**
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			// 提取description
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
