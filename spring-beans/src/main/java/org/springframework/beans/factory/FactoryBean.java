@@ -57,6 +57,11 @@ import org.springframework.lang.Nullable;
  */
 public interface FactoryBean<T> {
 
+	/*当调用getBean （”car”）时， Spring 通过反射机制发现CarFactory Bean 实现了FactoryBean
+	的接口，这时Spring 容器就调用接口方法CarFactoryBean#getObject（）方法返回。如果希望获取
+	CarFactoryBean 的实例，贝IJ需要在使用getBean(beanName） 方法时在beanName 前显示的加上
+			”＆”前缀，例如getBean（”＆car”);*/
+
 	/**
 	 * Return an instance (possibly shared or independent) of the object
 	 * managed by this factory.
@@ -74,6 +79,7 @@ public interface FactoryBean<T> {
 	 * @throws Exception in case of creation errors
 	 * @see FactoryBeanNotInitializedException
 	 */
+	// 返回由FactoryBean创建的bean实例，如果isSingleton返回的是true，则该实例会放到Spring容器中单实例缓存池中
 	@Nullable
 	T getObject() throws Exception;
 
@@ -96,6 +102,7 @@ public interface FactoryBean<T> {
 	 * or {@code null} if not known at the time of the call
 	 * @see ListableBeanFactory#getBeansOfType
 	 */
+	// 返回FactoryBean创建的bean类型
 	@Nullable
 	Class<?> getObjectType();
 
@@ -124,6 +131,7 @@ public interface FactoryBean<T> {
 	 * @see #getObject()
 	 * @see SmartFactoryBean#isPrototype()
 	 */
+	// 返回由FactoryBean创建的bean实例的作用域是singleton还是prototype
 	default boolean isSingleton() {
 		return true;
 	}

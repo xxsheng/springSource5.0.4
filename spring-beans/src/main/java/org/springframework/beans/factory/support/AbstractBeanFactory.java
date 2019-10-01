@@ -196,6 +196,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
 		// 提取对应的beanName
+		/*
+		* 1、去掉FactoryBean的修饰符，也就是说如果name="&aa",那么会首先去除&而使name="aa"。
+		* 2、取指定alias所表示的最终beanName，例如别名A指向名称为B的bean则返回B；
+		* 若别名A指向别名B，别名B又指向名称为C的bean则返回C。
+		* */
 		final String beanName = transformedBeanName(name);
 		Object bean;
 
@@ -208,7 +213,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		*
 		* */
 		// Eagerly check singleton cache for manually registered singletons.
-		// 直接尝试从缓存中或者singletonFactories中的ObjectFactory中获取 Step1
+		// 首先尝试从缓存中加载，如果加载不成功则再次尝试从singletonFactories中加载。
+		// Step1
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isDebugEnabled()) {
@@ -233,6 +239,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 			// Check if bean definition exists in this factory.
 			BeanFactory parentBeanFactory = getParentBeanFactory();
+			// 如果当前不存在beanName，调用方法parentBeanFactory.getBean去父类工厂中寻找，父类工厂通常为空
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
 				String nameToLookup = originalBeanName(name);
@@ -255,8 +262,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			try {
+				// 将存储xml配置文件的GernericBeanDefinition转换为RootBeanDefinition,如果指定BeanName是子Bean的话
+				//同时会合并父类的相关属性Text
+
+				// 递归调用，实例化依赖bean
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				checkMergedBeanDefinition(mbd, beanName, args);
+
+				// 根据属性bean的属性dependsOn、singleton、prototype、scope进行实例化
 
 				// Guarantee initialization of beans that the current bean depends on.
 				String[] dependsOn = mbd.getDependsOn();
@@ -334,6 +347,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		}
 
 		// Check if required type matches the type of the actual bean instance.
+		// 如果指定的需求类型不为空需要进行类型转换，否则直接强制转换
 		if (requiredType != null && !requiredType.isInstance(bean)) {
 			try {
 				T convertedBean = getTypeConverter().convertIfNecessary(bean, requiredType);
