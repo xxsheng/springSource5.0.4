@@ -293,6 +293,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				//实例化依赖的bean后便可以实例化mbd本身了
+				/*
+				* 因为bean的初始化过程中很可能会用到某些属性，而某些属性很可能是动态配置的，并且配置成依赖于其他的bean
+				* 那么这个时候就有必要先加载依赖的bean，所以，在spring的加载顺序中，在初始化某一个bean的时候会首先初始化
+				* 这个bean所对应的依赖
+				* */
 				//singleton模式的创建
 				// Create bean instance.
 				if (mbd.isSingleton()) {
@@ -312,6 +317,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// prototype模式的创建
+				/*
+				* spring中存在着不同的scope，其中默认的是singleton，但是还有其他的配置，诸如prototype，request之类的
+				* 在这个步骤中，spring会根据不同的配置进行不同的初始化策略
+				* */
 				else if (mbd.isPrototype()) {
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
@@ -1602,14 +1611,23 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param mbd the merged bean definition
 	 * @return the object to expose for the bean
 	 */
+	/*
+	* 我们得到bean的实例后的第一件事就是调用这个方法来检测以下正确性，其实就是y用于检测当前bean是否是FactoryBean类型的bean
+	* 如果是，那么需要调用该bean对应的FactoryBean实例中的getObject()作为返回值
+	*
+	* 无论是从缓存中获取到的bean还是通过不同的scope策略加载的bean都只是最原始的bean状态，并不一定是我们最终想要的bean。
+	* */
 	protected Object getObjectForBeanInstance(
 			Object beanInstance, String name, String beanName, @Nullable RootBeanDefinition mbd) {
 
 		// Don't let calling code try to dereference the factory if the bean isn't a factory.
+		// step1 判断name是否含有factorybean特征
 		if (BeanFactoryUtils.isFactoryDereference(name)) {
+			// 如果name符合规则，判断是否是nullbean的子类
 			if (beanInstance instanceof NullBean) {
 				return beanInstance;
 			}
+			// 如果符合name规则，且不是factoryBean的的子类或者实现类，则报错
 			if (!(beanInstance instanceof FactoryBean)) {
 				throw new BeanIsNotAFactoryException(transformedBeanName(name), beanInstance.getClass());
 			}
@@ -1618,12 +1636,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
 		// caller actually wants a reference to the factory.
+		// 如果bean不是factorybean的实现类或者name符合factorybean的规则 则返回类本身
 		if (!(beanInstance instanceof FactoryBean) || BeanFactoryUtils.isFactoryDereference(name)) {
 			return beanInstance;
 		}
 
 		Object object = null;
 		if (mbd == null) {
+			// 此处为factorybean，从缓存中获取
 			object = getCachedObjectForFactoryBean(beanName);
 		}
 		if (object == null) {

@@ -48,4 +48,11 @@ public class BeanFactoryTest {
 	public void test1() {
 		Son son = new Son(1);
 	}
+
+	@Test
+	public void test2() {
+
+		BeanFactory bf = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
+		System.out.println(bf.getBean("&testFactoryBean"));
+	}
 }

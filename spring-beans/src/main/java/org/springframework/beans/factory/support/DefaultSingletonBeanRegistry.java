@@ -162,6 +162,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	@Nullable
 	public Object getSingleton(String beanName) {
 		// 参数true设置标识允许早期依赖
+		// setAllowCircularReferences()
 		return getSingleton(beanName, true);
 	}
 
@@ -173,6 +174,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @param allowEarlyReference whether early references should be created or not
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
+	/*
+	* step1:首先尝试从singletonObjects里面获取实例，如果获取不到再从earlySingletonObjects里面获取
+	* step2：如果还获取不到，在尝试从singletonFactories里面获取beanName对应的ObjectFactory，然后调用ObjectFactory的getObject来创建bean
+	* 并放到earlySingletonObjects里面去。
+	* step3：从singletonFactories里面remove掉这个ObjectFactory，而对于后续的所有内存操作都只是为了循环依赖检测时使用，也就是
+	* allowEarlyReference为true时的情况下才会使用
+	* */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		// 检查缓存中是否存在实例
@@ -182,6 +190,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			synchronized (this.singletonObjects) {
 				// 如果此bean正在加载则不处理
 				singletonObject = this.earlySingletonObjects.get(beanName);
+				// 此bean不为null且允许循环依赖则可以创建
 				if (singletonObject == null && allowEarlyReference) {
 					// 当某些方法需要提前初始化的时候则会调用addSingletonFactory方法将对应的ObjectFactory初始化策略存储在
 					// singletonFactories
