@@ -1659,6 +1659,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 			// 是否是用户自定义的而不是应用程序本身定义的
 			boolean synthetic = (mbd != null && mbd.isSynthetic());
+			// 重点代码
 			object = getObjectFromFactoryBean(factory, beanName, !synthetic);
 		}
 		return object;
