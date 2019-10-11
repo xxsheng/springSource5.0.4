@@ -2,11 +2,13 @@ package app;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
+import org.springframework.context.annotation.Import;
+import test.ImportBeanDefinitionRegis;
 
 @Configuration
-@ComponentScan(value = "Interf",excludeFilters = {@ComponentScan.Filter(value = Interf.impl.InterfaceImpl.class,type = ASSIGNABLE_TYPE)})
+//@ComponentScan(value = "Interf",excludeFilters = {@ComponentScan.Filter(value = Interf.impl.InterfaceImpl.class,type = ASSIGNABLE_TYPE)})
+@ComponentScan("test")
+@Import(ImportBeanDefinitionRegis.class)
 public class AppConfig {
 
 //	@Bean

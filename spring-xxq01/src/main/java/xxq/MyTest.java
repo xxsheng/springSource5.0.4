@@ -1,8 +1,6 @@
 package xxq;
 
-import Interf.Interface1;
 import app.AppConfig;
-import domain.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MyTest {
@@ -15,8 +13,10 @@ public class MyTest {
 //		User bean = ac.getBean(User.class);
 //		System.out.println(bean);
 //		System.out.println(MyTest.class.getClassLoader().getClass().getClassLoader());
-		Interface1 bean = ac.getBean(Interface1.class);
-		bean.sayHello();
+//		Interface1 bean = ac.getBean(Interface1.class);
+//		bean.sayHello();
+
+		System.out.println(ac.getBean("testBean"));
 	}
 
 
