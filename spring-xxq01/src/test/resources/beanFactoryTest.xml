@@ -33,4 +33,6 @@ http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
 <!--	<myname:user id="testBean" userName="aaa" email="bbb"/>-->
 
 	<bean id="testFactoryBean" class="test.factorybean.FactoryBeanTest" />
+
+
 </beans>
