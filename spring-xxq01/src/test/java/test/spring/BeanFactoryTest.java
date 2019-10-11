@@ -53,6 +53,6 @@ public class BeanFactoryTest {
 	public void test2() {
 
 		BeanFactory bf = new XmlBeanFactory(new ClassPathResource("beanFactoryTest.xml"));
-		System.out.println(bf.getBean("&testFactoryBean"));
+		System.out.println(bf.getBean("testFactoryBean"));
 	}
 }
