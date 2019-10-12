@@ -1,6 +1,8 @@
 package xxq;
 
 import Interf.Interface1;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.startup.Tomcat;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationHandler;
@@ -27,5 +29,17 @@ public class TestMain {
 		});
 
 		proxy.sayHello();
+	}
+
+	public static void main(String[] args) {
+		Tomcat tomcat = new Tomcat();
+		tomcat.setPort(6090);
+		tomcat.addWebapp("/", "d:\\");
+		try {
+			tomcat.start();
+		} catch (LifecycleException e) {
+			e.printStackTrace();
+		}
+		tomcat.getServer().await();
 	}
 }
