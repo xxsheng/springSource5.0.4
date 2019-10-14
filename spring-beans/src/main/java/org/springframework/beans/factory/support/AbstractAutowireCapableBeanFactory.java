@@ -472,7 +472,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Make sure bean class is actually resolved at this point, and
 		// clone the bean definition in case of a dynamically resolved Class
 		// which cannot be stored in the shared merged bean definition.
+		// 锁定class，根据设定的class属性或者根据className来解析class
 		Class<?> resolvedClass = resolveBeanClass(mbd, beanName);
+		// 如果beanclass不存在bd中，则克隆bd且找出beanclass
 		if (resolvedClass != null && !mbd.hasBeanClass() && mbd.getBeanClassName() != null) {
 			mbdToUse = new RootBeanDefinition(mbd);
 			mbdToUse.setBeanClass(resolvedClass);
@@ -480,6 +482,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Prepare method overrides.
 		try {
+			// 验证及准备覆盖的方法
+			/*
+			* 其实在spring中确实没有override-method这样的配置，但是如果读过前面的部分，可能会有所发现，在spring配置中是存在lookup-method和replace-method的
+			* 而这俩个的加载其实就是将配置统一放在beanDefinition中的methodOverrides属性里，而这个函数的操作其实也就是针对于这俩个配置的
+			* */
 			mbdToUse.prepareMethodOverrides();
 		}
 		catch (BeanDefinitionValidationException ex) {
@@ -489,7 +496,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			// 给beanPostprocessors一个机会来返回代理以替换真正的实例
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
+
+			// 待理解 当经过前置处理后返回的结果如果不为空，那么会直接略过后面的bean的创建而直接返回结果。这一特性虽然很容易被忽略，但是却起着至关重要的作用，
+			// 我们熟知的aop功能就是这么实现的
 			if (bean != null) {
 				return bean;
 			}
@@ -500,6 +511,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			// 重点方法 创建bean
 			Object beanInstance = doCreateBean(beanName, mbdToUse, args);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Finished creating instance of bean '" + beanName + "'");
@@ -1029,13 +1041,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Nullable
 	protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
 		Object bean = null;
+		// 如果尚未被解析
 		if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
 			// Make sure bean class is actually resolved at this point.
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
+					// 重点代码1
+					/*
+					*bean的实例化前调用，也就是将AbstractBeanDefinition转换为BeanWrapper前的处理，给子类一个修改beanDefinition的机会，也就是说当程序经过这个
+					* 方法后，bean可能已经不是我们认为的bean了，而是或许成为了一个j经过处理的代理bean，可能是通过cglib生成的，也可能是通过其他技术生成的。
+					* */
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {
+						// 重点代码2
+						/*
+						* spring中的规则是在bean的初始化后尽可能保证将注册的后置处理器的postProcessAfterInitialization方法应用到该bean中，因为如果
+						* 返回的bean不为null,那么便不会再次经历普通bean的创建过程，所以只能在这里应用后处理器的postProcessAfterInitialization方法
+						* */
 						bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
 					}
 				}

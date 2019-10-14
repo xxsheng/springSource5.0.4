@@ -1156,6 +1156,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 			Set<MethodOverride> overrides = getMethodOverrides().getOverrides();
 			synchronized (overrides) {
 				for (MethodOverride mo : overrides) {
+					// 重点代码
 					prepareMethodOverride(mo);
 				}
 			}
@@ -1170,6 +1171,14 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	protected void prepareMethodOverride(MethodOverride mo) throws BeanDefinitionValidationException {
+		/*
+		* lookup-method和replace-method这俩个功能实现原理其实是在bean实例化的时候如果检测到存在methodOverrides属性，会动态的为当前bean生成代理并使用
+		* 对用的拦截器为bean做增强处理，相关逻辑实现在bean的实例化部分详细介绍
+		*
+		* 对于方法的匹配来说，如果一个类中存在若干个重载方法，那么，在函数调用及增强的时候还需要根据参数类型进行匹配，来最终确认当前调用的到底是哪个函数。
+		* 但是spring将一部分匹配工作在这里完成了，如果当前类中的方法只有一个，那么就设置重载该方法没有被重载，这样在后续调用的时候便可以直接使用找到的方法，
+		* 而不需要进行方法的参数匹配验证了，而且还可以提前对方法存在性进行验证。
+		* */
 		int count = ClassUtils.getMethodCountForName(getBeanClass(), mo.getMethodName());
 		if (count == 0) {
 			throw new BeanDefinitionValidationException(
