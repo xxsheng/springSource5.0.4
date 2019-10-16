@@ -17,6 +17,7 @@ public class MyTest {
 //		bean.sayHello();
 
 		System.out.println(ac.getBean("testBean"));
+		System.out.println(ac.getBean("xx"));
 	}
 
 

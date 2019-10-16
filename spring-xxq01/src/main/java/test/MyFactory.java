@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 @Component
 public class MyFactory implements BeanFactoryPostProcessor {
@@ -15,7 +16,8 @@ public class MyFactory implements BeanFactoryPostProcessor {
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		GenericBeanDefinition testBean = (GenericBeanDefinition) beanFactory.getBeanDefinition("testBean");
 		testBean.setAutowireMode(3);
-//		Object o = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{TestHandler.class}, new Handler());
+		Object o = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{TestHandler.class}, new Handler());
+		beanFactory.registerSingleton("xx1",o);
 	}
 }
 @Component
@@ -26,6 +28,14 @@ class Handler implements InvocationHandler {
 		return null;
 	}
 }
+//@Component
+//class Handler1 implements InvocationHandler {
+//
+//	@Override
+//	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//		return null;
+//	}
+//}
 interface TestHandler {
 
 }
