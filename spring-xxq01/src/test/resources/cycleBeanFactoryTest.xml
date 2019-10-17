@@ -6,15 +6,15 @@
 http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
 	<description>sss</description>
 
-	<bean id="testA" class="test.circularReferences.entity.TestA">
+	<bean id="testA" class="test.circularReferences.entity.TestA" scope="prototype">
 		<constructor-arg index="0" ref="testB"/>
 	</bean>
 
-	<bean id="testB" class="test.circularReferences.entity.TestB">
+	<bean id="testB" class="test.circularReferences.entity.TestB" scope="prototype">
 		<constructor-arg index="0" ref="testC"/>
 	</bean>
 
-	<bean id="testC" class="test.circularReferences.entity.TestC">
+	<bean id="testC" class="test.circularReferences.entity.TestC" scope="prototype">
 		<constructor-arg index="0" ref="testA"/>
 	</bean>
 

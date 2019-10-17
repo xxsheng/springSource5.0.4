@@ -33,6 +33,8 @@ package test.circularReferences;
 * 并将 “testC”标识符放到 “当前创建bean池”，然后进行setter注入“testA”
 * 4) 最后在依赖注入 “testB” 和 “testA”，完成setter注入
 *
+*3、prototype范围的依赖处理
+* 	对于 “prototype” 作用域bean，spring容器无法完成依赖注入，因为spring容器不进行缓存 “prototype”作用域的bean，因此无法提前暴露一个创建中的bean。示例如下：
 *
 *
 */
