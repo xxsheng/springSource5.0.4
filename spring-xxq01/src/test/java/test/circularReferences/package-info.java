@@ -36,5 +36,17 @@ package test.circularReferences;
 *3、prototype范围的依赖处理
 * 	对于 “prototype” 作用域bean，spring容器无法完成依赖注入，因为spring容器不进行缓存 “prototype”作用域的bean，因此无法提前暴露一个创建中的bean。示例如下：
 *
+* 	<bean id="testD" class="test.circularReferences.entity.TestD" scope="prototype">
+		<property name="testE" ref="testE"/>
+	</bean>
+
+	<bean id="testE" class="test.circularReferences.entity.TestE" scope="prototype">
+		<property name="testF" ref="testF"/>
+	</bean>
+
+	<bean id="testF" class="test.circularReferences.entity.TestF" scope="prototype">
+		<property name="testD" ref="testD"/>
+	</bean>
 *
+*4、对于 “singleton” 作用域bean，可以通过 “setAllowCircularReference(false);” 来禁用循环引用。
 */

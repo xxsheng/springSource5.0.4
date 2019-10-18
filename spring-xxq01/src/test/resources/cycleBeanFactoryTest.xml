@@ -6,16 +6,27 @@
 http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
 	<description>sss</description>
 
-	<bean id="testA" class="test.circularReferences.entity.TestA" scope="prototype">
-		<constructor-arg index="0" ref="testB"/>
+<!--	<bean id="testA" class="test.circularReferences.entity.TestA" >-->
+<!--		<constructor-arg index="0" ref="testB"/>-->
+<!--	</bean>-->
+
+<!--	<bean id="testB" class="test.circularReferences.entity.TestB" >-->
+<!--		<constructor-arg index="0" ref="testC"/>-->
+<!--	</bean>-->
+
+<!--	<bean id="testC" class="test.circularReferences.entity.TestC">-->
+<!--		<constructor-arg index="0" ref="testA"/>-->
+<!--	</bean>-->
+
+	<bean id="testD" class="test.circularReferences.entity.TestD" >
+		<property name="testE" ref="testE"/>
 	</bean>
 
-	<bean id="testB" class="test.circularReferences.entity.TestB" scope="prototype">
-		<constructor-arg index="0" ref="testC"/>
+	<bean id="testE" class="test.circularReferences.entity.TestE" >
+		<property name="testF" ref="testF"/>
 	</bean>
 
-	<bean id="testC" class="test.circularReferences.entity.TestC" scope="prototype">
-		<constructor-arg index="0" ref="testA"/>
+	<bean id="testF" class="test.circularReferences.entity.TestF" >
+		<property name="testD" ref="testD"/>
 	</bean>
-
 </beans>

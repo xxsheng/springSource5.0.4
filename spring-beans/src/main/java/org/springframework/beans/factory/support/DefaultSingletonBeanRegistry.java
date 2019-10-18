@@ -196,7 +196,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			synchronized (this.singletonObjects) {
 				// 如果此bean正在加载则不处理 --？
 				singletonObject = this.earlySingletonObjects.get(beanName);
-				// 此bean为null且允许循环依赖则可以创建
+				// 此bean为null且允许XX依赖则可以创建
 				if (singletonObject == null && allowEarlyReference) {
 					// 当某些方法需要提前初始化的时候则会调用addSingletonFactory方法将对应的ObjectFactory初始化策略存储在
 					// singletonFactories

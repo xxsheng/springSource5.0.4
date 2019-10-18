@@ -10,9 +10,11 @@ public class TestCircular {
 	@Test
 	public void test1() throws Throwable{
 		try {
+			int  [] [] a;
 //			XmlBeanFactory xmlBeanFactory = new XmlBeanFactory(new ClassPathResource("cycleBeanFactoryTest.xml"));
 			ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("cycleBeanFactoryTest.xml");
-			System.out.println(classPathXmlApplicationContext.getBean("testA"));
+//			System.out.println(classPathXmlApplicationContext.isSingleton("testA"));
+			System.out.println(classPathXmlApplicationContext.getBean("testD"));
 		} catch (BeansException e) {
 			e.printStackTrace();
 		}
