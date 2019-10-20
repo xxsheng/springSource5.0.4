@@ -18,15 +18,18 @@ http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
 <!--		<constructor-arg index="0" ref="testA"/>-->
 <!--	</bean>-->
 
-	<bean id="testD" class="test.circularReferences.entity.TestD" >
+<!--	<bean id="testD" class="test.circularReferences.entity.TestD" >
 		<property name="testE" ref="testE"/>
 	</bean>
 
-	<bean id="testE" class="test.circularReferences.entity.TestE" >
+	<bean id="testE" class="test.circularReferences.entity.TestE" scope="prototype">
 		<property name="testF" ref="testF"/>
 	</bean>
 
-	<bean id="testF" class="test.circularReferences.entity.TestF" >
+	<bean id="testF" class="test.circularReferences.entity.TestF" scope="prototype">
 		<property name="testD" ref="testD"/>
+	</bean>-->
+
+	<bean id="testD" class="test.circularReferences.entity.TestD">
 	</bean>
 </beans>

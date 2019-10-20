@@ -6,4 +6,8 @@ public class TestD {
 	public void setTestE(TestE testE) {
 		this.testE = testE;
 	}
+
+	public TestE getTestE() {
+		return testE;
+	}
 }
