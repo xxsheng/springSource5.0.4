@@ -1098,38 +1098,52 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			return obtainFromSupplier(instanceSupplier, beanName);
 		}
 
+		// 如果工厂方法不为空则使用工厂方法初始化策略
+		// 1、如果在rootBeanDefinition中存在factoryMethodName属性，或者说在配置文件中配置了factory-method，那么spring会尝试
+		// 使用instantiateUsingFactoryMethod(beanName, mbd, args)方法根据RootBeanDefinition中的配置生成bean的实例
 		if (mbd.getFactoryMethodName() != null)  {
 			return instantiateUsingFactoryMethod(beanName, mbd, args);
 		}
 
+		//2、解析构造函数并进行构造函数得实例化。因为一个bean对应的类中可能会有多个构造函数，而每个构造函数的参数不相同，
+		// 水平在根据参数及类型去判断最终使用哪个构造函数进行实例化。但是判断的过程是个比较耗性能的步骤，所以采取缓存机制，
+		// 如果已经解析过则不需要重复解析，而是直接从rootBeanDefinition中的属性resolvedConstructorOrFactoryMethod缓存
+		// 的值去取，否则需要再次解析，并将解析的结果添加至RootBeanDefinition中的属性resolvedConstructorOrFactoryMethod中。
 		// Shortcut when re-creating the same bean...
 		boolean resolved = false;
 		boolean autowireNecessary = false;
 		if (args == null) {
 			synchronized (mbd.constructorArgumentLock) {
+				// 一个类有多个构造函数，每个构造函数都有不同的参数，所以调用前需要先根据参数锁定构造函数或对应的工厂方法
 				if (mbd.resolvedConstructorOrFactoryMethod != null) {
 					resolved = true;
 					autowireNecessary = mbd.constructorArgumentsResolved;
 				}
 			}
 		}
+		// 如果已经解析过则使用解析好的构造函数不需要再次锁定
 		if (resolved) {
 			if (autowireNecessary) {
+				// 构造函数自动注入
 				return autowireConstructor(beanName, mbd, null, null);
 			}
 			else {
+				// 使用默认构造函数注入
 				return instantiateBean(beanName, mbd);
 			}
 		}
 
 		// Need to determine the constructor...
+		// 需要根据参数解析构造函数
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null ||
 				mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_CONSTRUCTOR ||
 				mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args))  {
+			// 使用构造函数注入
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}
 
+		// 使用默认构造函数注入
 		// No special handling: simply use no-arg constructor.
 		return instantiateBean(beanName, mbd);
 	}
