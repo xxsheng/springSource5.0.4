@@ -123,19 +123,25 @@ class ConstructorResolver {
 			}
 		}
 
+		// 没有被缓存--在容器中没有找到该bean的构造方法
 		if (constructorToUse == null) {
 			// Need to resolve the constructor.
+			// chosenCtors默认为null，使用默认构造方法，如果不为null，则用户传入的参数推断构造函数
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
 			int minNrOfArgs;
 			if (explicitArgs != null) {
+				// 最小参数个数为传入的参数个数
 				minNrOfArgs = explicitArgs.length;
 			}
 			else {
+				// 提取配置文件中的配置的构造函数参数
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
+				// 用于承载解析后的构造参数的值
 				resolvedValues = new ConstructorArgumentValues();
+				// 能解析到的参数个数
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
