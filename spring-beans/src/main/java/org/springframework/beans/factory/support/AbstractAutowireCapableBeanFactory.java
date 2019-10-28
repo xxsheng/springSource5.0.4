@@ -1129,6 +1129,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 			else {
 				// 使用默认构造函数注入
+				// 调用实例化策略进行实例化
 				return instantiateBean(beanName, mbd);
 			}
 		}

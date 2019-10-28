@@ -95,6 +95,9 @@ class ConstructorResolver {
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
 
+		// step1 如果传入的explicitArgs不为空，那么可以直接确定参数，因为explicitArgs参数是在调用bean的时候用户指定的
+		// 在beanFactory类中存在这样的方法： Object getBean(String name, Objecy... args) throws BeanException
+
 		if (explicitArgs != null) {
 			// expliciArgs 通过getBean方法传入的时候指定方法参数那么直接使用
 			argsToUse = explicitArgs;
@@ -141,7 +144,7 @@ class ConstructorResolver {
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				// 用于承载解析后的构造参数的值
 				resolvedValues = new ConstructorArgumentValues();
-				// 能解析到的参数个数
+				// 能解析到的参数个数--此处存在依赖注入
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
@@ -185,6 +188,12 @@ class ConstructorResolver {
 				if (resolvedValues != null) {
 					// 满足上面的条件，有参数的情况下则根据值构造对应参数类型的参数
 					try {
+
+						/*
+						*  获取参数名称可以有俩种方式，一种是通过注解的方式直接获取，另一种就是使用spring中提供的工具类
+						* ParamterNameDiscover来获取。
+						* */
+
 						// 取得构造方法上@ConstructorProperties的注解参数
 						String[] paramNames = ConstructorPropertiesChecker.evaluate(candidate, paramTypes.length);
 						if (paramNames == null) {
@@ -196,6 +205,7 @@ class ConstructorResolver {
 							}
 						}
 						// 根据名称和数据类型创建参数持有者----挺重要，有时间可以看
+						// 使用spring中提供的类型转换器或者用户提供的自定义类型转换器进行转换
 						argsHolder = createArgumentArray(beanName, mbd, resolvedValues, bw, paramTypes, paramNames,
 								getUserDeclaredConstructor(candidate), autowiring);
 					}
@@ -218,11 +228,11 @@ class ConstructorResolver {
 					if (paramTypes.length != explicitArgs.length) {
 						continue;
 					}
-					// 此处应对应外部传入的参数等于构造函数的情况，但是又可以理解为构造函数没有参数的情况下
+					// 此处应对应外部传入的参数等于构造函数的情况
 					argsHolder = new ArgumentsHolder(explicitArgs);
 				}
 
-				// 探测是否有不确定性的构造函数存在，例如不同构造函数的参数为父子关系
+				// 探测是否有不确定性的构造函数存在，例如不同构造函数的参数为父子关系(接口实现类与接口)
 				int typeDiffWeight = (mbd.isLenientConstructorResolution() ?
 						argsHolder.getTypeDifferenceWeight(paramTypes) : argsHolder.getAssignabilityWeight(paramTypes));
 				// Choose this constructor if it represents the closest match.
@@ -635,6 +645,7 @@ class ConstructorResolver {
 				resolvedValues.addIndexedArgumentValue(index, valueHolder);
 			}
 			else {
+				// 将实际bean注入到该构造方法中来
 				Object resolvedValue =
 						valueResolver.resolveValueIfNecessary("constructor argument", valueHolder.getValue());
 				ConstructorArgumentValues.ValueHolder resolvedValueHolder =
