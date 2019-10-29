@@ -6,10 +6,11 @@
 	<import resource="../ttt/beanFactoryTest1.xml" />
 	
 	<bean id="getBeanTest" class="test.lookup.bean.GetBeanTest">
-		<lookup-method bean="student" name="getBean"/>
+<!--		<lookup-method bean="student" name="getBean"/>-->
+		<property name="user" ref="techer" />
 	</bean>
 
-	<bean id="techer" class="test.lookup.bean.Techer"/>
+	<bean id="techer" class="test.lookup.bean.Techer" scope="prototype"/>
 	<bean id="student" class="test.lookup.bean.Student"/>
 
 	<bean id="testMethodReplacer" class="test.replace.TestMethodReplacer"/>

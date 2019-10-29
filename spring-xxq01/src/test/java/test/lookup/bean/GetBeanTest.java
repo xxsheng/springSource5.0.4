@@ -1,10 +1,20 @@
 package test.lookup.bean;
 
-public abstract class GetBeanTest {
+public  class GetBeanTest {
 
-	public void showMe() {
-		this.getBean().showMe();
+	private User user;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public abstract User getBean();
+	public User getUser() {
+		return user;
+	}
+
+	//	public void showMe() {
+//		this.getBean().showMe();
+//	}
+
+//	public abstract User getBean();
 }
