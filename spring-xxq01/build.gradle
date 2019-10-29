@@ -25,6 +25,6 @@ dependencies {
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.22'
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot
-    compile group: 'org.springframework.boot', name: 'spring-boot', version: '2.1.5.RELEASE'
+//    compile group: 'org.springframework.boot', name: 'spring-boot', version: '2.1.5.RELEASE'
 
 }
