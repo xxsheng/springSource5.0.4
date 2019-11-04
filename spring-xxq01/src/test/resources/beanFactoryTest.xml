@@ -3,7 +3,7 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:myname="http://www.lexueba.com/schema/user"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
+		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
 	<description>sss</description>
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
 	<!--<bean  class="domain.MyTestBean" >
