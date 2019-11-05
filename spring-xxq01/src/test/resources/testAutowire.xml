@@ -6,7 +6,7 @@
 	<bean id="test1" class="test.autowire.byName.Test1" />
 	<bean id="test2" class="test.autowire.byName.Test2" />
 
-	<bean id="test3" class="test.autowire.byName.Test3">
+	<bean id="test3" class="test.autowire.byName.Test3" autowire="byType">
 <!--		<property name="test1" ref="test1"/>-->
 <!--		<property name="test2" ref="test2"/>-->
 	</bean>

@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 import test.autowire.byName.imp.Imp1;
 
 @Component
-public class Test1 implements Imp1 {
+public class Test4 implements Imp1 {
 }
