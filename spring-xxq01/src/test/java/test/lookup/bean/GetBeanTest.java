@@ -1,6 +1,6 @@
 package test.lookup.bean;
 
-public  class GetBeanTest {
+public abstract class GetBeanTest {
 
 	private User user;
 
@@ -16,5 +16,5 @@ public  class GetBeanTest {
 //		this.getBean().showMe();
 //	}
 
-//	public abstract User getBean();
+	public abstract User getBean();
 }
