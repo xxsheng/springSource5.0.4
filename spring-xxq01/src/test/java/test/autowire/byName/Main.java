@@ -22,16 +22,17 @@ public class Main {
 		ac.register(AppConfig.class);
 		ac.refresh();
 		System.out.println(ac);
-		BeanInfo beanInfo = Introspector.getBeanInfo(Test3.class);
-		for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
-			if (propertyDescriptor.getWriteMethod() != null) {
-
-				for (Type genericParameterType : propertyDescriptor.getWriteMethod().getGenericParameterTypes()) {
-					if (genericParameterType instanceof  ParameterizedType ){
-						System.out.println(((ParameterizedType) genericParameterType).getActualTypeArguments()[0]);
-					}
-					System.out.println(genericParameterType);
-				}
+		Object test3 = ac.getBean("test3");
+//		BeanInfo beanInfo = Introspector.getBeanInfo(Test3.class);
+//		for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+//			if (propertyDescriptor.getWriteMethod() != null) {
+//
+//				for (Type genericParameterType : propertyDescriptor.getWriteMethod().getGenericParameterTypes()) {
+//					if (genericParameterType instanceof  ParameterizedType ){
+//						System.out.println(((ParameterizedType) genericParameterType).getActualTypeArguments()[0]);
+//					}
+//					System.out.println(genericParameterType);
+//				}
 
 
 //				for (Class<?> parameterType : propertyDescriptor.getWriteMethod().getParameterTypes()) {
@@ -42,8 +43,8 @@ public class Main {
 //					}
 //					System.out.println(parameterType);
 //				}
-			}
-		}
-		System.out.println(beanInfo);
+//			}
+//		}
+//		System.out.println(beanInfo);
 	}
 }
