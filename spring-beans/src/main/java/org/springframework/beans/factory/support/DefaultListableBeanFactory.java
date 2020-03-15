@@ -1064,8 +1064,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				return shortcut;
 			}
 
-			// 用于支持spring中新增的注解@Value，具体用法还不清楚
 			Class<?> type = descriptor.getDependencyType();
+			// 用于支持spring中新增的注解@Value，具体用法还不清楚
 			Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);
 			if (value != null) {
 				if (value instanceof String) {
@@ -1086,6 +1086,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 
 			Map<String, Object> matchingBeans = findAutowireCandidates(beanName, type, descriptor);
+			// 如果没有找到相应的bean且required为true，则报错
 			if (matchingBeans.isEmpty()) {
 				if (isRequired(descriptor)) {
 					raiseNoMatchingBeanFound(type, descriptor.getResolvableType(), descriptor);
@@ -1145,12 +1146,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private Object resolveMultipleBeans(DependencyDescriptor descriptor, @Nullable String beanName,
 			@Nullable Set<String> autowiredBeanNames, @Nullable TypeConverter typeConverter) {
 
+		// 获取参数类型
 		Class<?> type = descriptor.getDependencyType();
 		// 数组类型
 		if (type.isArray()) {
+			// 如果是数组类型，则获取数组的对象类型，此处的componentType就是数组对象类型
 			Class<?> componentType = type.getComponentType();
+			// 获取已经处理完的类型对象
 			ResolvableType resolvableType = descriptor.getResolvableType();
 			Class<?> resolvedArrayType = resolvableType.resolve();
+			// 如果已经处理的类型不等于null且不等于上面获取的则走下面方法，含义？
 			if (resolvedArrayType != null && resolvedArrayType != type) {
 				type = resolvedArrayType;
 				componentType = resolvableType.getComponentType().resolve();
@@ -1158,6 +1163,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			if (componentType == null) {
 				return null;
 			}
+			// 根据参数类型在beanfactory中所有类型的匹配bean，返回值为：key=匹配的beanName，value=beanName对应实例化后的bean
+			// 通过getBean(beanName)返回
 			Map<String, Object> matchingBeans = findAutowireCandidates(beanName, componentType,
 					new MultiElementDescriptor(descriptor));
 			if (matchingBeans.isEmpty()) {
@@ -1167,12 +1174,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				autowiredBeanNames.addAll(matchingBeans.keySet());
 			}
 			TypeConverter converter = (typeConverter != null ? typeConverter : getTypeConverter());
+			// 通过转换器将bean的值转换成对应的type类型，此处代码比较深
 			Object result = converter.convertIfNecessary(matchingBeans.values(), type);
 			if (getDependencyComparator() != null && result instanceof Object[]) {
 				Arrays.sort((Object[]) result, adaptDependencyComparator(matchingBeans));
 			}
 			return result;
 		}
+		// 如果是collection类型，list set..
 		else if (Collection.class.isAssignableFrom(type) && type.isInterface()) {
 			Class<?> elementType = descriptor.getResolvableType().asCollection().resolveGeneric();
 			if (elementType == null) {

@@ -1,18 +1,8 @@
 package test.autowire.byName;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.ClassPathResource;
-import sun.reflect.generics.repository.MethodRepository;
 
-import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.List;
 
 public class Main {
 	public static void main(String[] args) throws IntrospectionException {
@@ -46,5 +36,7 @@ public class Main {
 //			}
 //		}
 //		System.out.println(beanInfo);
+
+//		System.out.println(args.getClass().getComponentType());
 	}
 }
