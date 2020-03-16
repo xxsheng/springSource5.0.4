@@ -3,7 +3,6 @@ package test.autowire.byName;
 import org.springframework.stereotype.Component;
 import test.autowire.byName.imp.Imp1;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -19,7 +18,7 @@ public class Test3 {
 //	@Value("#{systemProperties.sun.jnu.encoding}")
 //	public void setAbc(String abc) {this.abc = abc;}
 
-	public void setTest1xx(ArrayList<Imp1> test11) {
+	public void setTest1xx(List<Imp1> test11) {
 		this.test11 = test11;
 	}
 
