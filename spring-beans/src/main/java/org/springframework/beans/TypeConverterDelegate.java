@@ -471,6 +471,7 @@ class TypeConverterDelegate {
 		if (input instanceof Collection) {
 			// Convert Collection elements to array elements.
 			Collection<?> coll = (Collection<?>) input;
+			// 根据类型创建对象数组
 			Object result = Array.newInstance(componentType, coll.size());
 			int i = 0;
 			for (Iterator<?> it = coll.iterator(); it.hasNext(); i++) {

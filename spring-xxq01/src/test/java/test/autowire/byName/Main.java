@@ -37,6 +37,6 @@ public class Main {
 //		}
 //		System.out.println(beanInfo);
 
-//		System.out.println(args.getClass().getComponentType());
 	}
+
 }

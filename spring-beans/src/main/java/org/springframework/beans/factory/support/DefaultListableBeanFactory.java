@@ -1065,7 +1065,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			}
 
 			Class<?> type = descriptor.getDependencyType();
-			// 用于支持spring中新增的注解@Value，具体用法还不清楚
+			// step1 用于支持spring中新增的注解@Value，具体用法还不清楚
 			Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);
 			if (value != null) {
 				if (value instanceof String) {
@@ -1079,7 +1079,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 						converter.convertIfNecessary(value, type, descriptor.getMethodParameter()));
 			}
 
-			// 如果没有解析成功，则需要考虑各种情况
+			// step1如果没有解析成功，则需要考虑各种情况
 			Object multipleBeans = resolveMultipleBeans(descriptor, beanName, autowiredBeanNames, typeConverter);
 			if (multipleBeans != null) {
 				return multipleBeans;
