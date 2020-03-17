@@ -1,4 +1,4 @@
-package test.autowire.byName;
+package test.autowire.bynameandtype;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
