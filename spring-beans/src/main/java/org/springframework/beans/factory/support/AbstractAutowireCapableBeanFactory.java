@@ -513,6 +513,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 1、如果是单例则需要清除缓存
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
+		// 创建bean的实例
 		if (instanceWrapper == null) {
 			// 根据指定的bean使用对应的策略创建新的实例，如：工厂方法，构造函数自动注入，简单初始化
 //			1、如果存在工厂方法，则使用工厂方法进行初始化。
@@ -531,7 +532,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.postProcessed) {
 				try {
 					// 应用MergedBeanDefinitionPostProcessor
-					// @Resource注解可能是在此处处理 ？
+					// @Resource？@Autowired注解可能是在此处处理 ？
 					// 典型应用 将初始化方法相关属性合并到beandefinition中
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
