@@ -6,6 +6,7 @@ import java.util.List;
 public class Test {
 	public static void main(String[] args) {
 		List<?extends Father> list = getList();
+		Father father = list.get(0);
 //		list.add(new Father())
 
 		List<? super Father> list1 = new ArrayList<>();
@@ -15,8 +16,9 @@ public class Test {
 	}
 
 	private static List<? extends Father> getList() {
-		List<Son1> list = new ArrayList<>();
+		List<Father> list = new ArrayList<>();
 		list.add(new Son1());
+		list.add(new Father());
 		return list;
 
 	}
