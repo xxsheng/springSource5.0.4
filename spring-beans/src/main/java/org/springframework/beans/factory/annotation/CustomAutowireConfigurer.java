@@ -97,6 +97,7 @@ public class CustomAutowireConfigurer implements BeanFactoryPostProcessor, BeanC
 			}
 			DefaultListableBeanFactory dlbf = (DefaultListableBeanFactory) beanFactory;
 			if (!(dlbf.getAutowireCandidateResolver() instanceof QualifierAnnotationAutowireCandidateResolver)) {
+				// 默认使用SimpleAutowireCandidateResolver
 				dlbf.setAutowireCandidateResolver(new QualifierAnnotationAutowireCandidateResolver());
 			}
 			QualifierAnnotationAutowireCandidateResolver resolver =
