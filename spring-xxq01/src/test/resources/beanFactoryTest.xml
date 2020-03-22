@@ -19,7 +19,7 @@
 	</bean>
 
 
-		<bean id="bean2" name="bean3" class="domain.MyTestBean3">
+		<bean id="myTestBean3" name="bean3" class="domain.MyTestBean3">
 		</bean>
 
 <!--	<bean class="domain.MyTestBean3">-->
@@ -34,5 +34,27 @@
 
 	<bean id="testFactoryBean" class="test.factorybean.FactoryBeanTest" />
 
+	<bean id="userMapper" class="test.six.five.two.UserMapper">
+		<property name="dataValue">
+			<value>2013-03-15</value>
+		</property>
+	</bean>
 
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.util.Date">
+					<value>test.six.five.two.propertyeditor.DatePropertyEditor</value>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+<!--	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">-->
+<!--		<property name="propertyEditorRegistrars">-->
+<!--			<list>-->
+<!--				<bean class="test.six.five.two.propertyeditor.DatePropertyEditorRegistrar"/>-->
+<!--			</list>-->
+<!--		</property>-->
+<!--	</bean>-->
 </beans>
