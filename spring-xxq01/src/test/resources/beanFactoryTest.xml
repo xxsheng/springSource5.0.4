@@ -44,7 +44,7 @@
 		<property name="customEditors">
 			<map>
 				<entry key="java.util.Date">
-					<value>test.six.five.two.propertyeditor.DatePropertyEditor</value>
+					<value type="java.lang.Class">test.six.five.two.propertyeditor.DatePropertyEditor</value>
 				</entry>
 			</map>
 		</property>
