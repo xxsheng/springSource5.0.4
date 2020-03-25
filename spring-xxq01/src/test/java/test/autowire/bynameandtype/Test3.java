@@ -21,6 +21,11 @@ public class Test3 extends AbstractClassTest implements BeanFactoryAware {
 //	@Value("#{systemProperties.sun.jnu.encoding}")
 //	public void setAbc(String abc) {this.abc = abc;}
 
+
+	public Test3() {
+		System.out.println("------");
+	}
+
 	public void setTest1xx(List<Imp1> test11) {
 		this.test11 = test11;
 	}

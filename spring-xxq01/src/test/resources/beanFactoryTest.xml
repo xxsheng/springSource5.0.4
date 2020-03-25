@@ -50,11 +50,11 @@
 		</property>
 	</bean>
 
-<!--	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">-->
-<!--		<property name="propertyEditorRegistrars">-->
-<!--			<list>-->
-<!--				<bean class="test.six.five.two.propertyeditor.DatePropertyEditorRegistrar"/>-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="propertyEditorRegistrars">
+			<list>
+				<bean class="test.six.five.two.propertyeditor.DatePropertyEditorRegistrar"/>
+			</list>
+		</property>
+	</bean>
 </beans>

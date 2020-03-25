@@ -10,7 +10,7 @@ public class MyImportBeanDefinitionRegistery implements ImportBeanDefinitionRegi
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 
 		GenericBeanDefinition test3 = (GenericBeanDefinition)registry.getBeanDefinition("test3");
-		test3.setAutowireMode(2);
+		test3.setAutowireMode(3);
 
 	}
 }

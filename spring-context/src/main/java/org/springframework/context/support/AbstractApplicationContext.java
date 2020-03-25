@@ -642,6 +642,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		// 设置几个忽略自动装配的接口
 		// https://www.jianshu.com/p/3c7e0608ff1f
+		// 当spring将applicationContextAwareProcessor注册后，那么在invokeAwareInterfaces方法中间调用的Aware类已经不是普通的bean了
+		// 如ResourceLoaderAware，ApplicationEventPublisherAware等，那么当然需要在spring做bean的依赖注入的时候忽略他们，而ignoreDePendencyInterface
+		// 的作用正是如此
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
@@ -652,6 +655,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
 		// 设置了几个自动装配的特殊规则
+		// spring中有了忽略依赖的功能，当然也必不可少的会有注册依赖的功能
+		// 当注册了依赖解析后，例如当注册了对beanFactory.class的解析依赖后，当bean的属性注入的时候
+		// 一旦检测到属性为BeanFactory类型便会将beanFactory的实例注入进去
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
