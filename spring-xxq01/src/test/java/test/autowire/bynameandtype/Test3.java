@@ -3,9 +3,11 @@ package test.autowire.bynameandtype;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import test.autowire.bynameandtype.imp.Imp1;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Component
@@ -15,6 +17,9 @@ public class Test3 extends AbstractClassTest implements BeanFactoryAware {
 	List<Imp1> test11;
 //	@Autowired
 	Test2 test22;
+
+	@Autowired
+	HttpServletRequest httpServletRequest;
 
 //	String abc;
 //

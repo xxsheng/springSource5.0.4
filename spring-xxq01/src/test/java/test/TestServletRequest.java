@@ -13,6 +13,9 @@ import java.util.Map;
 
 public class TestServletRequest implements HttpServletRequest {
 
+	public static void main(String[] args) {
+		System.out.println("----");
+	}
 
 	@Override
 	public String getAuthType() {

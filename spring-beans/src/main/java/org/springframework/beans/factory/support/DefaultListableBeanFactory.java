@@ -1085,6 +1085,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				return multipleBeans;
 			}
 
+			// 有些bean不在容器中，在resolvableDependencies中
 			Map<String, Object> matchingBeans = findAutowireCandidates(beanName, type, descriptor);
 			// 统一处理required场景，如果没有找到相应的bean且required为true，则报错
 			if (matchingBeans.isEmpty()) {
