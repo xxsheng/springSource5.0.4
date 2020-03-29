@@ -1,6 +1,5 @@
 package test;
 
-import domain.MyTestBean;
 import domain.MyTestBean3;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,7 +16,7 @@ public class Main {
 		ApplicationContext bf = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
 //		MyTestBean myTestBean = (MyTestBean) bf.getBean("myTestBean");
 		MyTestBean3 myTestBean = (MyTestBean3) bf.getBean("myTestBean");
-		System.out.println(myTestBean);
+		System.out.println(myTestBean.getName());
 
 //		User testBean = (User)bf.getBean("testBean");
 //		System.out.println(testBean);

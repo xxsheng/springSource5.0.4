@@ -14,7 +14,7 @@ public class DatePropertyEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		System.out.println("args: " + text);
+//		System.out.println("args: " + text);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
 		try {
 			Date parse = simpleDateFormat.parse(text);

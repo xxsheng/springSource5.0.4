@@ -19,9 +19,19 @@
 	</bean>
 
 
-		<bean id="myTestBean3" name="bean3" class="domain.MyTestBean3">
+		<bean id="myTestBean" name="bean3" class="domain.MyTestBean3">
+			<property name="name">
+				<value>${bean.name}</value>
+			</property>
 		</bean>
 
+	<bean id="mesHandle" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>bean.properties</value>
+			</list>
+		</property>
+	</bean>
 <!--	<bean class="domain.MyTestBean3">-->
 <!--	</bean>-->
 
