@@ -16,14 +16,14 @@
 
 package org.springframework.core.annotation;
 
+import org.springframework.core.DecoratingProxy;
+import org.springframework.core.OrderComparator;
+import org.springframework.lang.Nullable;
+
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.core.DecoratingProxy;
-import org.springframework.core.OrderComparator;
-import org.springframework.lang.Nullable;
 
 /**
  * {@code AnnotationAwareOrderComparator} is an extension of
@@ -62,6 +62,7 @@ public class AnnotationAwareOrderComparator extends OrderComparator {
 	@Nullable
 	protected Integer findOrder(Object obj) {
 		// Check for regular Ordered interface
+		// 优先使用父类的方法，也就是优先使用接口实现方式的优先级
 		Integer order = super.findOrder(obj);
 		if (order != null) {
 			return order;

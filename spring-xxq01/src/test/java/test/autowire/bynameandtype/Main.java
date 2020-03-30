@@ -1,7 +1,6 @@
 package test.autowire.bynameandtype;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.beans.IntrospectionException;
 
@@ -12,6 +11,7 @@ public class Main {
 //		AnnotationConfigWebApplicationContext ac = new AnnotationConfigWebApplicationContext();
 		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext();
 		ac.register(AppConfig.class);
+		ac.addBeanFactoryPostProcessor(new MyBeanDefinitionRegistryPostProssor());
 		ac.refresh();
 		System.out.println(ac);
 		Object test3 = ac.getBean("test3");
