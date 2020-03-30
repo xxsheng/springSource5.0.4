@@ -18,6 +18,7 @@ public class Main {
 //		MyTestBean3 myTestBean = (MyTestBean3) bf.getBean("myTestBean");
 //		System.out.println(myTestBean);
 		System.out.println(bf.getBean("userMapper", UserMapper.class));
+		System.out.println(bf.getBean("simplePostProcessor"));
 
 //		User testBean = (User)bf.getBean("testBean");
 //		System.out.println(testBean);

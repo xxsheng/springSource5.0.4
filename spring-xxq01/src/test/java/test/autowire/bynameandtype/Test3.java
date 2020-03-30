@@ -18,8 +18,6 @@ public class Test3 extends AbstractClassTest implements BeanFactoryAware {
 //	@Autowired
 	Test2 test22;
 
-	@Autowired
-	HttpServletRequest httpServletRequest;
 
 //	String abc;
 //
