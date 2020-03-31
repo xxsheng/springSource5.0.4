@@ -208,6 +208,10 @@ class PostProcessorRegistrationDelegate {
 		// Register BeanPostProcessorChecker that logs an info message when
 		// a bean is created during BeanPostProcessor instantiation, i.e. when
 		// a bean is not eligible for getting processed by all BeanPostProcessors.
+		/*
+		*beanPostProcessorChecker是一个普通的信息打印，可能会有些情况，当spring的配置中的后置处理器还没有被注册就已经开始了bean的初始化时
+		* 便会打印出BeanPostProcessorChecker中设定的信息
+		* */
 		int beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + 1 + postProcessorNames.length;
 		beanFactory.addBeanPostProcessor(new BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));
 

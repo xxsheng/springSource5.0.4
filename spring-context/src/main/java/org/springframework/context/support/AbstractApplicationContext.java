@@ -519,6 +519,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Register bean processors that intercept bean creation.
 				// 注册拦截bean创建的Bean处理器，这里这是注册，真正的调用是在getBean的时候
+`` ``				// 使用beanFactory方式进行spring的bean的加载时是不会有任何改变的，但是使用applicationContext方式获取bean的时候会在获取每个
+				// bean时打印出"====",而这个特性就是在registerBeanPostProcessor方法中完成的。
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
