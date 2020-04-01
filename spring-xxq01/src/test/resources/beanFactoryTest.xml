@@ -87,4 +87,8 @@
 			</set>
 		</property>
 	</bean>
+
+	<bean id="post1" class="test.six.six.MyBeanPostProcessor"/>
+	<bean id="post2" class="test.six.six.MyBeanPostProcessor2"/>
+	<bean id="post3" class="test.six.six.MyBeanPostProcessor3"/>
 </beans>

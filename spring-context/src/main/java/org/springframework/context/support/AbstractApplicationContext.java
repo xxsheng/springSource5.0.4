@@ -519,7 +519,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				// Register bean processors that intercept bean creation.
 				// 注册拦截bean创建的Bean处理器，这里这是注册，真正的调用是在getBean的时候
-`` ``				// 使用beanFactory方式进行spring的bean的加载时是不会有任何改变的，但是使用applicationContext方式获取bean的时候会在获取每个
+				// 使用beanFactory方式进行spring的bean的加载时是不会有任何改变的，但是使用applicationContext方式获取bean的时候会在获取每个
 				// bean时打印出"====",而这个特性就是在registerBeanPostProcessor方法中完成的。
 				registerBeanPostProcessors(beanFactory);
 
@@ -730,7 +730,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Initialize the MessageSource.
 	 * Use parent's if none defined in this context.
 	 */
+	/*
+	* “国际化信息”也被称为“本地化信息”，一般需要俩个条件才可以确定一个特定类型的本地化信息，他们分别是“语言类型”和
+	* “国家/地区的类型”。如中文本地化信息既然中国大陆地区的中文，又有中国台湾地区，中国香港地区的中文，还有新加坡地区的中文。
+	* java通过java.util.Locale类表示一个本地化对象，它允许通过语言参数和国家/地区参数创建一个确定的本地化对象。
+	* java.util.Locale是表示语言和国家/地区信息的本地化类，他是创建国家化应用的基础。
+	*
+	* */
 	protected void initMessageSource() {
+
+		/*
+		*	spring定义了访问国际化信息的MessageSource接口，并提供了几个易用的实现类。MessageSource分别被HierachicalMessageSource
+		* 和ApplicationContext接口扩展。
+		* */
+
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (beanFactory.containsLocalBean(MESSAGE_SOURCE_BEAN_NAME)) {
 			this.messageSource = beanFactory.getBean(MESSAGE_SOURCE_BEAN_NAME, MessageSource.class);
