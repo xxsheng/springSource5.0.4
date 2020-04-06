@@ -43,7 +43,7 @@ public class MessageSource {
 		System.out.println(new GregorianCalendar().getTime());
 		System.out.println(1.0e3);
 
-		System.out.println(ResourceBundle.getBundle("messages", locale1).getString("test"));
+		System.out.println(ResourceBundle.getBundle("messages/messages", locale1).getString("test"));
 		byte[] gbks = "中文".getBytes("utf-8");
 		for (byte gbk : gbks) {
 			System.out.println(gbk);

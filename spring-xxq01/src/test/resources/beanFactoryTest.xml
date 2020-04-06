@@ -91,4 +91,14 @@
 	<bean id="post1" class="test.six.six.MyBeanPostProcessor"/>
 	<bean id="post2" class="test.six.six.MyBeanPostProcessor2"/>
 	<bean id="post3" class="test.six.six.MyBeanPostProcessor3"/>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages.messages</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="testListener" class="test.six.six.chapter4.TestListener"/>
 </beans>

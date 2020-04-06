@@ -16,6 +16,11 @@
 
 package org.springframework.context.support;
 
+import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,18 +31,8 @@ import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 
 /**
  * {@link org.springframework.context.MessageSource} implementation that
@@ -365,6 +360,7 @@ public class ResourceBundleMessageSource extends AbstractResourceBasedMessageSou
 					throw (IOException) ex.getException();
 				}
 				if (stream != null) {
+					// https://www.cnblogs.com/feshfans/p/9885985.html
 					String encoding = getDefaultEncoding();
 					if (encoding == null) {
 						encoding = "ISO-8859-1";
