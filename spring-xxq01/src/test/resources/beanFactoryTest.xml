@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:myname="http://www.lexueba.com/schema/user"
+	   xmlns:myname="http://www.lexueba.com/schema/user" xmlns:aop="http://www.springframework.org/schema/aop"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd">
+		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 	<description>sss</description>
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
 	<!--<bean  class="domain.MyTestBean" >
@@ -101,4 +101,9 @@
 	</bean>
 
 	<bean id="testListener" class="test.six.six.chapter4.TestListener"/>
+
+	<aop:aspectj-autoproxy/>
+
+	<bean id="testBean" class="test.seven.chapter1.TestBean"/>
+	<bean id="aspectBean" class="test.seven.chapter1.AspectJTest"/>
 </beans>
