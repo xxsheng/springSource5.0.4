@@ -82,6 +82,7 @@ public interface BeanPostProcessor {
 	 * @see org.springframework.beans.factory.FactoryBean
 	 */
 	@Nullable
+	// 第二次代理所处理的地方
 	default Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		return bean;
 	}
