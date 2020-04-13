@@ -16,19 +16,18 @@
 
 package org.springframework.aop.aspectj.annotation;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.aspectj.lang.reflect.PerClauseKind;
-
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Helper for retrieving @AspectJ beans from a BeanFactory and building
@@ -80,6 +79,13 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 	 * @return the list of {@link org.springframework.aop.Advisor} beans
 	 * @see #isEligibleBean
 	 */
+	/*
+	* 1、获取所有beanName,这一步骤中所有在beanFactory中注册的bean都会被提取出来。
+	* 2、遍历所有beanName，并找出声明AspectJ注解的类，进行进一步的处理
+	* 3、对标记为AspectJ注解的类进行增强器的提取。
+	* 4、将结果加入缓存
+	*
+	* */
 	public List<Advisor> buildAspectJAdvisors() {
 		List<String> aspectNames = this.aspectBeanNames;
 
@@ -87,31 +93,41 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 			synchronized (this) {
 				aspectNames = this.aspectBeanNames;
 				if (aspectNames == null) {
+					// 每次寻找增强器都将重新生成集合对象
 					List<Advisor> advisors = new LinkedList<>();
 					aspectNames = new LinkedList<>();
+					// 获取所有的beanName
 					String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 							this.beanFactory, Object.class, true, false);
+					// 遍历所有的beanName
 					for (String beanName : beanNames) {
+						// 不合法的bean则略过，由子类定义规则，默认返回true
 						if (!isEligibleBean(beanName)) {
 							continue;
 						}
 						// We must be careful not to instantiate beans eagerly as in this case they
 						// would be cached by the Spring container but would not have been weaved.
+						// 获取bean的对应类型
 						Class<?> beanType = this.beanFactory.getType(beanName);
 						if (beanType == null) {
 							continue;
 						}
+						// 如果存在aspect注解
 						if (this.advisorFactory.isAspect(beanType)) {
 							aspectNames.add(beanName);
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);
+							// 默认为单例
 							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
 								MetadataAwareAspectInstanceFactory factory =
 										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
+								// 解析标记AspectJ注解中的增强方法，重点方法
 								List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory);
 								if (this.beanFactory.isSingleton(beanName)) {
+									// 单例放入缓存
 									this.advisorsCache.put(beanName, classAdvisors);
 								}
 								else {
+									// 非单例将创建工厂放入工厂缓存
 									this.aspectFactoryCache.put(beanName, factory);
 								}
 								advisors.addAll(classAdvisors);
@@ -138,6 +154,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 		if (aspectNames.isEmpty()) {
 			return Collections.emptyList();
 		}
+		// 第一次初始化aop相关切面不会走这里，上面会直接返回，此处进来已经是第一次之后的情况，此处aspectNames已经有缓存值
 		List<Advisor> advisors = new LinkedList<>();
 		for (String aspectName : aspectNames) {
 			List<Advisor> cachedAdvisors = this.advisorsCache.get(aspectName);
@@ -157,6 +174,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 	 * @param beanName the name of the aspect bean
 	 * @return whether the bean is eligible
 	 */
+	// 是否是一个合格的bean，子类实现，或者默认返回true
 	protected boolean isEligibleBean(String beanName) {
 		return true;
 	}
