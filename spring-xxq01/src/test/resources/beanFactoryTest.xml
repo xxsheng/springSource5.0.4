@@ -102,10 +102,11 @@
 
 	<bean id="testListener" class="test.six.six.chapter4.TestListener"/>
 
-	<aop:aspectj-autoproxy/>
+
 
 	<bean id="testBean" class="test.seven.chapter1.TestBean"/>
 	<bean id="aspectBean" class="test.seven.chapter1.AspectJTest"/>
+<!--	<bean id="aspectBean1" class="test.seven.chapter1.AspectJTest1"/>-->
 
 	<bean id="testLogAspect" class="test.seven.chapter1.TestLogAspect"/>
 
@@ -119,4 +120,5 @@
 		</aop:aspect>
 
 	</aop:config>
+	<aop:aspectj-autoproxy/>
 </beans>

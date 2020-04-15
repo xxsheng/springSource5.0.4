@@ -16,13 +16,12 @@
 
 package org.springframework.aop.framework.adapter;
 
-import java.io.Serializable;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
 
 /**
  * Interceptor to wrap am {@link org.springframework.aop.MethodBeforeAdvice}.
@@ -41,6 +40,7 @@ public class MethodBeforeAdviceInterceptor implements MethodInterceptor, Seriali
 	 * Create a new MethodBeforeAdviceInterceptor for the given advice.
 	 * @param advice the MethodBeforeAdvice to wrap
 	 */
+	// 这里的advice就是AspectJMethodBeforeAdvice
 	public MethodBeforeAdviceInterceptor(MethodBeforeAdvice advice) {
 		Assert.notNull(advice, "Advice must not be null");
 		this.advice = advice;

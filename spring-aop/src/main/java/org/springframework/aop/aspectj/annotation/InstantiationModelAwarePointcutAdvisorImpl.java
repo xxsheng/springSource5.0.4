@@ -16,14 +16,8 @@
 
 package org.springframework.aop.aspectj.annotation;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-
 import org.aopalliance.aop.Advice;
 import org.aspectj.lang.reflect.PerClauseKind;
-
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.aspectj.AspectJPrecedenceInformation;
@@ -32,6 +26,11 @@ import org.springframework.aop.aspectj.annotation.AbstractAspectJAdvisorFactory.
 import org.springframework.aop.support.DynamicMethodMatcherPointcut;
 import org.springframework.aop.support.Pointcuts;
 import org.springframework.lang.Nullable;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.lang.reflect.Method;
 
 /**
  * Internal implementation of AspectJPointcutAdvisor.
@@ -58,6 +57,7 @@ class InstantiationModelAwarePointcutAdvisorImpl
 
 	private transient Method aspectJAdviceMethod;
 
+	// 切点工厂类
 	private final AspectJAdvisorFactory aspectJAdvisorFactory;
 
 	private final MetadataAwareAspectInstanceFactory aspectInstanceFactory;
@@ -84,14 +84,20 @@ class InstantiationModelAwarePointcutAdvisorImpl
 			Method aspectJAdviceMethod, AspectJAdvisorFactory aspectJAdvisorFactory,
 			MetadataAwareAspectInstanceFactory aspectInstanceFactory, int declarationOrder, String aspectName) {
 
+		// test()
 		this.declaredPointcut = declaredPointcut;
 		this.declaringClass = aspectJAdviceMethod.getDeclaringClass();
 		this.methodName = aspectJAdviceMethod.getName();
 		this.parameterTypes = aspectJAdviceMethod.getParameterTypes();
+		// public void test.AspectJTest.beforeTest()
 		this.aspectJAdviceMethod = aspectJAdviceMethod;
+		// 切点相关工厂类
 		this.aspectJAdvisorFactory = aspectJAdvisorFactory;
+		// 切面类相关信息
 		this.aspectInstanceFactory = aspectInstanceFactory;
+		// 初始为0
 		this.declarationOrder = declarationOrder;
+		// aspectBean
 		this.aspectName = aspectName;
 
 		if (aspectInstanceFactory.getAspectMetadata().isLazilyInstantiated()) {
@@ -110,6 +116,7 @@ class InstantiationModelAwarePointcutAdvisorImpl
 			// A singleton aspect.
 			this.pointcut = this.declaredPointcut;
 			this.lazy = false;
+			// 初始化增强器
 			this.instantiatedAdvice = instantiateAdvice(this.declaredPointcut);
 		}
 	}

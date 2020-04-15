@@ -398,6 +398,7 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	 */
 	private Class<?> getAdviceClass(Element adviceElement, ParserContext parserContext) {
 		String elementName = parserContext.getDelegate().getLocalName(adviceElement);
+		// xml解析，根据不同类型解析不同的切点方法
 		if (BEFORE.equals(elementName)) {
 			return AspectJMethodBeforeAdvice.class;
 		}
