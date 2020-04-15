@@ -118,6 +118,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 							AspectMetadata amd = new AspectMetadata(beanType, beanName);
 							// 默认为单例
 							if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
+								// 一个工厂，用来保存切面类相关信息
 								MetadataAwareAspectInstanceFactory factory =
 										new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
 								// 解析标记AspectJ注解中的增强方法，重点方法
