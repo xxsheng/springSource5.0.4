@@ -107,6 +107,7 @@ public abstract class AnnotationUtils {
 	private static final Map<Class<?>, Boolean> annotatedInterfaceCache =
 			new ConcurrentReferenceHashMap<>(256);
 
+	// 主要判断是否使用了spring aliasfor注解
 	private static final Map<Class<? extends Annotation>, Boolean> synthesizableCache =
 			new ConcurrentReferenceHashMap<>(256);
 
