@@ -13,6 +13,7 @@ public class TestBean {
 	}
 
 	public void test() {
+		System.out.println(testStr);
 		System.out.println("test");
 	}
 }

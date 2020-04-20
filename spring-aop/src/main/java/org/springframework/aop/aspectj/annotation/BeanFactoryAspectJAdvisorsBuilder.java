@@ -97,6 +97,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 					List<Advisor> advisors = new LinkedList<>();
 					aspectNames = new LinkedList<>();
 					// 获取所有的beanName
+					// 因此如果不在aspect的注解上加入spring容器管理，那么则无法被扫描到，所有的aspect则会失效。
 					String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 							this.beanFactory, Object.class, true, false);
 					// 遍历所有的beanName
