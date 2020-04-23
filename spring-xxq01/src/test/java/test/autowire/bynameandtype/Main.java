@@ -8,10 +8,11 @@ public class Main {
 	public static void main(String[] args) throws IntrospectionException {
 //		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("testAutowire.xml");
 //		System.out.println(classPathXmlApplicationContext);
+//		System.out.println(classPathXmlApplicationContext.getBean("test3"));
 //		AnnotationConfigWebApplicationContext ac = new AnnotationConfigWebApplicationContext();
 		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext();
 		ac.register(AppConfig.class);
-		ac.addBeanFactoryPostProcessor(new MyBeanDefinitionRegistryPostProssor());
+//		ac.addBeanFactoryPostProcessor(new MyBeanDefinitionRegistryPostProssor());
 		ac.refresh();
 		System.out.println(ac);
 		Object test3 = ac.getBean("test3");
