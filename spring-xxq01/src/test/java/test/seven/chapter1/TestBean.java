@@ -1,6 +1,6 @@
 package test.seven.chapter1;
 
-public class TestBean {
+public class TestBean implements TestInterface{
 
 	private String testStr = "testStr";
 

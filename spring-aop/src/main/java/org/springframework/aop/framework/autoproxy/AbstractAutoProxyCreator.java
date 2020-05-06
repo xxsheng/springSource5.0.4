@@ -359,6 +359,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			return proxy;
 		}
 
+		// 没有增强器，则将当前bean的key加入无需缓存的map中
 		this.advisedBeans.put(cacheKey, Boolean.FALSE);
 		return bean;
 	}
@@ -472,7 +473,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		proxyFactory.addAdvisors(advisors);
 		// 设置被代理的对象
 		proxyFactory.setTargetSource(targetSource);
-		// 定制代理
+		// 定制代理 子类实现
 		customizeProxyFactory(proxyFactory);
 		// 用来控制代理工厂被配置之后，是否允许修改通知
 		// 缺省为false（即在代理被配置之后，不允许修改代理的配置）
@@ -523,17 +524,21 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	// 解析所有的增强器
 	protected Advisor[] buildAdvisors(@Nullable String beanName, @Nullable Object[] specificInterceptors) {
 		// Handle prototypes correctly...
-		// 解析注册的所有 interceptorName
+		// 解析注册的所有 interceptorName并转化为advisor
 		Advisor[] commonInterceptors = resolveInterceptorNames();
 
 		List<Object> allInterceptors = new ArrayList<>();
 		if (specificInterceptors != null) {
+			// 将增强器加入拦截器对象列表中
 			allInterceptors.addAll(Arrays.asList(specificInterceptors));
 			if (commonInterceptors.length > 0) {
+				// 默认为true
 				if (this.applyCommonInterceptorsFirst) {
+					// 将拦截器加入头部
 					allInterceptors.addAll(0, Arrays.asList(commonInterceptors));
 				}
 				else {
+					// 否则加入尾部
 					allInterceptors.addAll(Arrays.asList(commonInterceptors));
 				}
 			}
@@ -547,7 +552,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 		Advisor[] advisors = new Advisor[allInterceptors.size()];
 		for (int i = 0; i < allInterceptors.size(); i++) {
-			// 将拦截器进行封装为Advisor
+			// 将拦截器进行封装为Advisor，重点方法
 			advisors[i] = this.advisorAdapterRegistry.wrap(allInterceptors.get(i));
 		}
 		return advisors;
