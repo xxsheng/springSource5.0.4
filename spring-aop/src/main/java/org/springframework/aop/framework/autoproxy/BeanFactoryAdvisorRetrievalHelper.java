@@ -84,6 +84,7 @@ public class BeanFactoryAdvisorRetrievalHelper {
 		List<Advisor> advisors = new LinkedList<>();
 		for (String name : advisorNames) {
 			if (isEligibleBean(name)) {
+				// 一般来说，advisor不会被代理（循环依赖），因此这一块不会被走到
 				if (this.beanFactory.isCurrentlyInCreation(name)) {
 					if (logger.isDebugEnabled()) {
 						logger.debug("Skipping currently created advisor '" + name + "'");

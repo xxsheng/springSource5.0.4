@@ -103,6 +103,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
 		// 得到所有的增强器对象，如果发现正在初始化的bean包含在advisor中，则跳过
 		for (Advisor advisor : candidateAdvisors) {
+			// 此处主要是xml配置产生的增强器
 			if (advisor instanceof AspectJPointcutAdvisor) {
 				// 此处判断如果是aspect自身（当前创建的bean如果等于aspectName则表示一致），则直接跳过，不代理自己
 				if (((AbstractAspectJAdvice) advisor.getAdvice()).getAspectName().equals(beanName)) {

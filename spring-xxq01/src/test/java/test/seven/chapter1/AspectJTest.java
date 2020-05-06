@@ -4,9 +4,15 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Aspect
-public class AspectJTest {
+@Configuration
+@ComponentScan
+@EnableAspectJAutoProxy
+public class AspectJTest{
 
 	@Pointcut("execution(* test.*.chapter1.*.test(..))")
 	public void test(){}
@@ -14,7 +20,7 @@ public class AspectJTest {
 	@Before("test()")
 	public void beforeTest() {
 		System.out.println("beforeTest");
-		throw new RuntimeException();
+//		throw new RuntimeException();
 //		return;
 	}
 

@@ -122,6 +122,8 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 
 		findDefinedEqualsAndHashCodeMethods(proxiedInterfaces);
 		return Proxy.newProxyInstance(classLoader, proxiedInterfaces, this);
+		// 1、aspect如何初始化成cglib 默认走cglib，因为没有特殊的过滤规则，走注解类的初始化，则不会生成cglib
+		// 2、advisor如何排序 默认不排序，使用递归调用，采用不同的方法拦截打到统一递归调用
 	}
 
 	/**

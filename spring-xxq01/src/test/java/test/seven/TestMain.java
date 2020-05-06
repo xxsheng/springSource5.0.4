@@ -2,14 +2,15 @@ package test.seven;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import test.seven.chapter1.TestBean;
+import test.seven.chapter1.TestInterface;
 
 import java.io.IOException;
 
 public class TestMain {
 	public static void main(String[] args) throws IOException {
-		ApplicationContext bf = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
-		TestBean testBean = (TestBean) bf.getBean("testBean");
+		ApplicationContext ac = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
+//		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AspectJTest.class);
+		TestInterface testBean = (TestInterface) ac.getBean("testBean");
 		testBean.test();
 //		TestLogAspect testLogAspect = (TestLogAspect) bf.getBean("testLogAspect");
 //		testLogAspect.test();

@@ -376,6 +376,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * @see org.springframework.aop.framework.AopInfrastructureBean
 	 * @see #shouldSkip
 	 */
+	// 此处主要是注解产生的增强器
 	protected boolean isInfrastructureClass(Class<?> beanClass) {
 		boolean retVal = Advice.class.isAssignableFrom(beanClass) ||
 				Pointcut.class.isAssignableFrom(beanClass) ||
@@ -605,6 +606,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 	 * @see #PROXY_WITHOUT_ADDITIONAL_INTERCEPTORS
 	 */
 	@Nullable
+	/*
+	*自定义切点，同时会注入该bean
+	*
+	* */
 	protected abstract Object[] getAdvicesAndAdvisorsForBean(Class<?> beanClass, String beanName,
 			@Nullable TargetSource customTargetSource) throws BeansException;
 

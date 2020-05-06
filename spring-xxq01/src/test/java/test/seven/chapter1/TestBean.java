@@ -1,5 +1,8 @@
 package test.seven.chapter1;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TestBean implements TestInterface{
 
 	private String testStr = "testStr";
