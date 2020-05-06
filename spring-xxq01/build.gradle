@@ -26,5 +26,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot
 //    compile group: 'org.springframework.boot', name: 'spring-boot', version: '2.1.5.RELEASE'
+    testCompile("org.aspectj:aspectjweaver:${aspectjVersion}")
 
 }
