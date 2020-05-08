@@ -11,7 +11,8 @@ public class TestMain {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
 //		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AspectJTest.class);
 		TestInterface testBean = (TestInterface) ac.getBean("testBean");
-		testBean.test();
+//		testBean.test();
+		testBean.test1();
 //		TestLogAspect testLogAspect = (TestLogAspect) bf.getBean("testLogAspect");
 //		testLogAspect.test();
 //		Enumeration<URL> systemResources = ClassLoader.getSystemClassLoader().getSystemResources("META-INF/spring.handlers");

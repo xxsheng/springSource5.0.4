@@ -38,7 +38,8 @@ public class MyInvocationHandler implements InvocationHandler {
 		Object o = proxyClass1.getConstructor(InvocationHandler.class).newInstance(myInvocationHandler);
 
 		MyInvocationHandler myInvocationHandler1 = new MyInvocationHandler(proxy);
-		Object proxy1 = myInvocationHandler1.getProxy();
+		UserService proxy1 = (UserService)myInvocationHandler1.getProxy();
+		proxy1.add();
 
 		UserService userService1 = new UserServiceImpl();
 		MyInvocationHandler myInvocationHandler2 = new MyInvocationHandler(userService1);

@@ -19,4 +19,9 @@ public class TestBean implements TestInterface{
 		System.out.println(testStr);
 		System.out.println("test");
 	}
+
+	@Override
+	public void test1() {
+		System.out.println("-----");
+	}
 }
