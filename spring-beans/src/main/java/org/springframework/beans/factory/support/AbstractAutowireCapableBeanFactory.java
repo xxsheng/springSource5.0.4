@@ -391,7 +391,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object result = existingBean;
 		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
-			// 调用bean的后置处理器，将bean放到各个位置中
+			// 调用bean的后置处理器，将bean放到各个位置中（？）,或者初始化（代理）
 			Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
 			if (current == null) {
 				return result;
@@ -557,6 +557,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						"' to allow for resolving potential circular references");
 			}
 			// 为避免后期循环依赖，可以在bean初始化完成前将创建实例的ObjectFactory加入工厂
+			// 此处也会完成springaop的代理
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
