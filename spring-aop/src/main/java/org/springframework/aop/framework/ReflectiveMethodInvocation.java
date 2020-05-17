@@ -156,6 +156,12 @@ public class ReflectiveMethodInvocation implements ProxyMethodInvocation, Clonea
 
 	@Override
 	@Nullable
+	/*
+	* 主要职责是维护了链接调用的计数器，记录着当前调用链接的位置，以便链可以有序的进行下去，那么在
+	* 这个方法中并没有我们之前设想的那样维护各种增强的顺序，而是将此工作委托给了各个增强器，使各个增强器
+	* 在内部进行逻辑实现
+	*
+	* */
 	public Object proceed() throws Throwable {
 		//	We start with an index of -1 and increment early.
 		// 如果执行完所有增强方法后执行切点方法
