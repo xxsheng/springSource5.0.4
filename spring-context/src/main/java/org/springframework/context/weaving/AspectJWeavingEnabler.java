@@ -16,12 +16,7 @@
 
 package org.springframework.context.weaving;
 
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.security.ProtectionDomain;
-
 import org.aspectj.weaver.loadtime.ClassPreProcessorAgentAdapter;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -30,6 +25,10 @@ import org.springframework.core.Ordered;
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.lang.Nullable;
+
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
+import java.security.ProtectionDomain;
 
 /**
  * Post-processor that registers AspectJ's
@@ -83,6 +82,7 @@ public class AspectJWeavingEnabler
 	public static void enableAspectJWeaving(
 			@Nullable LoadTimeWeaver weaverToUse, @Nullable ClassLoader beanClassLoader) {
 
+		// 此时已经初始化为DefaultContextLoadTimeWeaver
 		if (weaverToUse == null) {
 			if (InstrumentationLoadTimeWeaver.isInstrumentationAvailable()) {
 				weaverToUse = new InstrumentationLoadTimeWeaver(beanClassLoader);
@@ -113,9 +113,12 @@ public class AspectJWeavingEnabler
 		public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
 				ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 
+			// 过滤点自身的jar
 			if (className.startsWith("org.aspectj") || className.startsWith("org/aspectj")) {
 				return classfileBuffer;
 			}
+
+			// 委托给AspectJ代理继续处理
 			return this.delegate.transform(loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
 		}
 	}

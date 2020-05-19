@@ -74,6 +74,7 @@ class LoadTimeWeaverBeanDefinitionParser extends AbstractSingleBeanDefinitionPar
 		builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
 
 		if (isAspectJWeavingEnabled(element.getAttribute(ASPECTJ_WEAVING_ATTRIBUTE), parserContext)) {
+			// 将org.Springframework.context.weaving.AspectWeavingEnabler封装在beanDefiniton中注册
 			if (!parserContext.getRegistry().containsBeanDefinition(ASPECTJ_WEAVING_ENABLER_BEAN_NAME)) {
 				RootBeanDefinition def = new RootBeanDefinition(ASPECTJ_WEAVING_ENABLER_CLASS_NAME);
 				parserContext.registerBeanComponent(
@@ -94,6 +95,7 @@ class LoadTimeWeaverBeanDefinitionParser extends AbstractSingleBeanDefinitionPar
 			return false;
 		}
 		else {
+			// 默认为autodetect，查看是否存在aop.xml
 			// Determine default...
 			ClassLoader cl = parserContext.getReaderContext().getBeanClassLoader();
 			return (cl != null && cl.getResource(AspectJWeavingEnabler.ASPECTJ_AOP_XML_RESOURCE) != null);
