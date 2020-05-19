@@ -2,8 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:myname="http://www.lexueba.com/schema/user" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	<description>sss</description>
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
 	<!--<bean  class="domain.MyTestBean" >
@@ -106,7 +107,7 @@
 
 	<bean id="testBean" class="test.seven.chapter1.TestBean"/>
 	<bean id="aspectBean" class="test.seven.chapter1.AspectJTest"/>
-<!--	<bean id="aspectBean1" class="test.seven.chapter1.AspectJTest1"/>-->
+	<bean id="aspectBean1" class="test.seven.chapter1.AspectJTest1"/>
 
 	<bean id="testLogAspect" class="test.seven.chapter1.TestLogAspect"/>
 
@@ -121,5 +122,10 @@
 
 	</aop:config>
 	<aop:aspectj-autoproxy/>
-<!--	<bean id="myProxyCreator" class="test.seven.chapter1.MyProxyCreator"/>-->
+	<bean id="myProxyCreator" class="test.seven.chapter1.MyProxyCreator"/>
+	<!--
+	https://www.cnblogs.com/wade-luffy/p/6078446.html
+	http://www.mamicode.com/info-detail-1613523.html
+	-->
+	<context:load-time-weaver/>
 </beans>
