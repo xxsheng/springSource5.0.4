@@ -1,11 +1,7 @@
 package test.seven;
 
-import org.springframework.aop.framework.Advised;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import test.seven.chapter1.AspectJTest;
-import test.seven.chapter1.TestBean;
 import test.seven.chapter1.TestInterface;
 
 import java.io.IOException;
@@ -33,6 +29,11 @@ class TestThread implements Runnable {
 
 	private TestMyClass testClass;
 
+	public int i=0;
+
+	public TestThread() {
+	}
+
 	public TestThread (TestMyClass testClass) {
 		this.testClass = testClass;
 	}
@@ -47,10 +48,12 @@ class TestThread implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		TestMyClass testMyClass = new TestMyClass();
-		TestMyClass testMyClass1 = new TestMyClass();
+		TestThread testThread = new TestThread();
+		TestMyClass testMyClass = new TestMyClass(testThread);
+//		TestMyClass testMyClass1 = new TestMyClass();
 		Thread thread1 = new Thread(new TestThread(testMyClass));
-		Thread thread2 = new Thread(new TestThread(testMyClass1));
+		Thread thread2 = new Thread(new TestThread(testMyClass));
+		testThread.i = 2;
 		thread1.start();
 		thread2.start();
 
@@ -58,10 +61,15 @@ class TestThread implements Runnable {
 }
 
 class TestMyClass {
+	private TestThread testThread;
+	public TestMyClass(TestThread testThread) {
+		this.testThread = testThread;
+	}
+
 	public void say() throws InterruptedException {
 		synchronized (this) {
 			System.out.println("111111");
-
+			System.out.println(testThread.i);
 			Thread.sleep(100000);
 		}
 	}

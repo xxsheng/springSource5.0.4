@@ -6,6 +6,7 @@ import org.springframework.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 
+// cglib 核心分析 https://www.jianshu.com/p/001f866a49d7
 public class CglibTest {
 	public static void main(String[] args) {
 		Enhancer enhancer = new Enhancer();
