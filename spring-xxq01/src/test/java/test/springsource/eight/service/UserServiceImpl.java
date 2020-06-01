@@ -2,8 +2,10 @@ package test.springsource.eight.service;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import test.springsource.eight.entity.User;
+import test.springsource.eight.mapper.UserRowMapper;
 
 import javax.sql.DataSource;
+import java.sql.Types;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -16,11 +18,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void save(User user) {
-
+		jdbcTemplate.update("insert into user(`name`, age, sex)values (?,?,?)", new Object[]{
+				user.getName(),user.getAge(), user.getSex()}, new int[] {Types.VARCHAR, Types.INTEGER, Types.VARCHAR}
+		);
 	}
 
 	@Override
 	public List<User> getUsers() {
-		return null;
+		List<User> list = jdbcTemplate.query("select * from user", new UserRowMapper());
+		return list;
 	}
 }

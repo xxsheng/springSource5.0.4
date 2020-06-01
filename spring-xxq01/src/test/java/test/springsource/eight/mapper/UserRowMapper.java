@@ -1,5 +1,6 @@
 package test.springsource.eight.mapper;
 
+import org.springframework.jdbc.core.RowMapper;
 import test.springsource.eight.entity.User;
 
 import java.sql.ResultSet;
