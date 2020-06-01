@@ -1,18 +1,18 @@
 package test.seven;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import test.seven.chapter1.AspectJTest;
 import test.seven.chapter1.TestInterface;
 
 import java.io.IOException;
 
 public class TestMain {
 	public static void main(String[] args) throws IOException {
-		ApplicationContext bf = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
+//		ApplicationContext bf = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
 		System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
 
 //		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "A:\\11_other\\cglibClass");
-//		AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AspectJTest.class);
+		AnnotationConfigApplicationContext bf = new AnnotationConfigApplicationContext(AspectJTest.class);
 		TestInterface testBean = (TestInterface) bf.getBean("testBean");
 		testBean.test();
 //		testBean.addAdvisor(null);
@@ -72,5 +72,22 @@ class TestMyClass {
 			System.out.println(testThread.i);
 			Thread.sleep(100000);
 		}
+	}
+}
+
+class A {
+	public A(String c) {
+		System.out.println("cc");
+	}
+}
+
+class B extends A{
+	public B(String a) {
+		super(a);
+		System.out.println(a);
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new B("a"));
 	}
 }
