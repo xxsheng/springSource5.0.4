@@ -130,7 +130,8 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/xxqDb?serverTimezone=UTC"/>
+		<!--<property name="url" value="jdbc:mysql://localhost:3306/xxqDb?serverTimezone=UTC"/>-->
+		<property name="url" value="jdbc:mysql://192.168.137.200:3306/springJdbc?serverTimezone=UTC"/>
 		<property name="username" value="root"/>
 		<property name="password" value="root"/>
 		<!-- 连接池启动时的初始值 -->
