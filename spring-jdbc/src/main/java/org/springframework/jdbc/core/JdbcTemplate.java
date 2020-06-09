@@ -99,6 +99,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	 * If this variable is set to a non-negative value, it will be used for setting the
 	 * fetchSize property on statements used for query processing.
 	 */
+	// 内存数据库缓存
 	private int fetchSize = -1;
 
 	/**
@@ -584,11 +585,14 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			logger.debug("Executing prepared SQL statement" + (sql != null ? " [" + sql + "]" : ""));
 		}
 
+		// 获取数据库连接
 		Connection con = DataSourceUtils.getConnection(obtainDataSource());
 		PreparedStatement ps = null;
 		try {
 			ps = psc.createPreparedStatement(con);
+			// 应用用户设定的输入参数
 			applyStatementSettings(ps);
+			// 回调函数
 			T result = action.doInPreparedStatement(ps);
 			handleWarnings(ps);
 			return result;
@@ -596,6 +600,7 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 		catch (SQLException ex) {
 			// Release Connection early, to avoid potential connection pool deadlock
 			// in the case when the exception translator hasn't been initialized yet.
+			// 释放数据库连接避免当异常转换器没有被初始化的时候出现潜在的连接池死锁
 			if (psc instanceof ParameterDisposer) {
 				((ParameterDisposer) psc).cleanupParameters();
 			}
@@ -909,41 +914,42 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 			logger.debug("Executing SQL batch update [" + sql + "]");
 		}
 
-		int[] result = execute(sql, (PreparedStatementCallback<int[]>) ps -> {
-			try {
-				int batchSize = pss.getBatchSize();
-				InterruptibleBatchPreparedStatementSetter ipss =
-						(pss instanceof InterruptibleBatchPreparedStatementSetter ?
-						(InterruptibleBatchPreparedStatementSetter) pss : null);
-				if (JdbcUtils.supportsBatchUpdates(ps.getConnection())) {
-					for (int i = 0; i < batchSize; i++) {
-						pss.setValues(ps, i);
-						if (ipss != null && ipss.isBatchExhausted(i)) {
-							break;
+		int[] result = execute(sql, new PreparedStatementCallback<int[]>() {
+			@Override
+			public int[] doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				try {
+					int batchSize = pss.getBatchSize();
+					InterruptibleBatchPreparedStatementSetter ipss =
+							(pss instanceof InterruptibleBatchPreparedStatementSetter ?
+									(InterruptibleBatchPreparedStatementSetter) pss : null);
+					if (JdbcUtils.supportsBatchUpdates(ps.getConnection())) {
+						for (int i = 0; i < batchSize; i++) {
+							pss.setValues(ps, i);
+							if (ipss != null && ipss.isBatchExhausted(i)) {
+								break;
+							}
+							ps.addBatch();
 						}
-						ps.addBatch();
-					}
-					return ps.executeBatch();
-				}
-				else {
-					List<Integer> rowsAffected = new ArrayList<>();
-					for (int i = 0; i < batchSize; i++) {
-						pss.setValues(ps, i);
-						if (ipss != null && ipss.isBatchExhausted(i)) {
-							break;
+						return ps.executeBatch();
+					} else {
+						List<Integer> rowsAffected = new ArrayList<>();
+						for (int i = 0; i < batchSize; i++) {
+							pss.setValues(ps, i);
+							if (ipss != null && ipss.isBatchExhausted(i)) {
+								break;
+							}
+							rowsAffected.add(ps.executeUpdate());
 						}
-						rowsAffected.add(ps.executeUpdate());
+						int[] rowsAffectedArray = new int[rowsAffected.size()];
+						for (int i = 0; i < rowsAffectedArray.length; i++) {
+							rowsAffectedArray[i] = rowsAffected.get(i);
+						}
+						return rowsAffectedArray;
 					}
-					int[] rowsAffectedArray = new int[rowsAffected.size()];
-					for (int i = 0; i < rowsAffectedArray.length; i++) {
-						rowsAffectedArray[i] = rowsAffected.get(i);
+				} finally {
+					if (pss instanceof ParameterDisposer) {
+						((ParameterDisposer) pss).cleanupParameters();
 					}
-					return rowsAffectedArray;
-				}
-			}
-			finally {
-				if (pss instanceof ParameterDisposer) {
-					((ParameterDisposer) pss).cleanupParameters();
 				}
 			}
 		});
@@ -1308,14 +1314,18 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	 * @see org.springframework.jdbc.datasource.DataSourceUtils#applyTransactionTimeout
 	 */
 	protected void applyStatementSettings(Statement stmt) throws SQLException {
+		// 配置和数据库交互的缓存
+		// 为 JDBC 驱动程序提供一个提示，它提示此 Statement 生成的 ResultSet 对象需要更多行时应该从数据库获取的行数。
 		int fetchSize = getFetchSize();
 		if (fetchSize != -1) {
 			stmt.setFetchSize(fetchSize);
 		}
+		// 将此 Statement 对象生成的所有 ResultSet 对象可以包含的最大行数限制设置为给定数。
 		int maxRows = getMaxRows();
 		if (maxRows != -1) {
 			stmt.setMaxRows(maxRows);
 		}
+		// 设置timeout
 		DataSourceUtils.applyTimeout(stmt, getDataSource(), getQueryTimeout());
 	}
 
@@ -1350,8 +1360,16 @@ public class JdbcTemplate extends JdbcAccessor implements JdbcOperations {
 	 * @see org.springframework.jdbc.SQLWarningException
 	 */
 	protected void handleWarnings(Statement stmt) throws SQLException {
+		// 当设置为忽略警告时只尝试打印日志
 		if (isIgnoreWarnings()) {
 			if (logger.isDebugEnabled()) {
+				// 如果日志开启的情况下打印日志
+				/*
+				* 这里用到一个类SqlWarning，SqlWarning提供关于数据库访问警告信息的异常，这些警告直接链接到导致警告的方法所在的对象。
+				* 警告可以从Connection、Statement和Result对象中获得。试图在已经关闭的连接上获取警告将导致抛出异常。注意，关闭语句时
+				* 还会关闭他可能生成的结果集。
+				*
+				* */
 				SQLWarning warningToLog = stmt.getWarnings();
 				while (warningToLog != null) {
 					logger.debug("SQLWarning ignored: SQL state '" + warningToLog.getSQLState() + "', error code '" +
