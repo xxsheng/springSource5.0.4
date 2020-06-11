@@ -16,13 +16,13 @@
 
 package org.springframework.jdbc.core;
 
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.lang.Nullable;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Collection;
-
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.lang.Nullable;
 
 /**
  * Simple adapter for {@link PreparedStatementSetter} that applies
@@ -59,10 +59,13 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 	public void setValues(PreparedStatement ps) throws SQLException {
 		int parameterPosition = 1;
 		if (this.args != null && this.argTypes != null) {
+			// 遍历每个参数以作类型匹配及转换
 			for (int i = 0; i < this.args.length; i++) {
 				Object arg = this.args[i];
+				// 如果是集合类型则需要进入集合类内部递归解析集合内部属性
 				if (arg instanceof Collection && this.argTypes[i] != Types.ARRAY) {
 					Collection<?> entries = (Collection<?>) arg;
+					// 此处采用for循环去遍历，比迭代器效率高
 					for (Object entry : entries) {
 						if (entry instanceof Object[]) {
 							Object[] valueArray = ((Object[]) entry);
@@ -72,6 +75,7 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 							}
 						}
 						else {
+							// 解析当前属性
 							doSetValue(ps, parameterPosition, this.argTypes[i], entry);
 							parameterPosition++;
 						}
@@ -94,6 +98,10 @@ public class ArgumentTypePreparedStatementSetter implements PreparedStatementSet
 	 * @param argValue the argument value
 	 * @throws SQLException if thrown by PreparedStatement methods
 	 */
+	/*
+	* 对单个参数及类型的匹配处理
+	*
+	* */
 	protected void doSetValue(PreparedStatement ps, int parameterPosition, int argType, Object argValue)
 			throws SQLException {
 
