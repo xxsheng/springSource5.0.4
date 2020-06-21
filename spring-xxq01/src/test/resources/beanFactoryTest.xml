@@ -147,7 +147,16 @@
 
 	<bean id="userService" class="test.springsource.eight.service.UserServiceImpl">
 		<!-- 注入数据源 -->
+<!--		<property name="dataSource" ref="dataSource"/>-->
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 
+	<bean id="userMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="test.springsource.nine.mapper.UserMapper"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
 </beans>
