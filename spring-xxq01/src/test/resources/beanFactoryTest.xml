@@ -48,7 +48,7 @@
 
 	<bean id="testFactoryBean" class="test.factorybean.FactoryBeanTest" />
 
-	<bean id="userMapper" class="test.six.five.two.UserMapper">
+	<bean id="userMapper1" class="test.six.five.two.UserMapper">
 		<property name="dataValue">
 			<value>2013-03-15</value>
 		</property>
@@ -121,7 +121,8 @@
 
 	</aop:config>
 	<aop:aspectj-autoproxy/>
-	<bean id="myProxyCreator" class="test.seven.chapter1.MyProxyCreator"/>
+	<!--会对所有bean进行代理-->
+<!--	<bean id="myProxyCreator" class="test.seven.chapter1.MyProxyCreator"/>-->
 	<!--
 	https://www.cnblogs.com/wade-luffy/p/6078446.html
 	http://www.mamicode.com/info-detail-1613523.html
@@ -150,13 +151,24 @@
 <!--		<property name="dataSource" ref="dataSource"/>-->
 	</bean>
 
+	<bean id="userDao" class="test.springsource.eight.dao.UserDao"/>
+	<bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg index="0" ref="dataSource"/>
+	</bean>
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 
-	<bean id="userMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="test.springsource.nine.mapper.UserMapper"/>
-		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+<!--	<bean id="userMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+<!--		<property name="mapperInterface" value="test.springsource.nine.mapper.UserMapper"/>-->
+<!--		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+<!--	</bean>-->
+
+	<!-- scan 会将注解扫描器注册进来 -->
+	<bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="${basePackage}"/>
+		<property name="processPropertyPlaceHolders" value="true"/>
 	</bean>
 </beans>

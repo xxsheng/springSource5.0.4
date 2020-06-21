@@ -7,4 +7,37 @@
 	<bean name="myTestBean1,myTestBean1,myTestBean2" class="domain.MyTestBean" >
 		<meta key="testStr" value="123"/>
 	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg index="0" ref="dataSource"/>
+	</bean>
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<!--<property name="url" value="jdbc:mysql://localhost:3306/xxqDb?serverTimezone=UTC"/>-->
+		<property name="url" value="jdbc:mysql://192.168.137.200:3306/springJdbc?serverTimezone=UTC"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+		<!-- 连接池启动时的初始值 -->
+		<property name="initialSize" value="1"/>
+		<!-- 连接池的最大值 -->
+		<property name="maxTotal" value="300"/>
+		<!-- 最大空闲值 -->
+		<property name="maxIdle" value="2"/>
+
+		<!-- 最小空闲值 -->
+		<property name="minIdle" value="1"/>
+	</bean>
+	<bean id="userService" class="test.springsource.eight.service.UserServiceImpl">
+		<!-- 注入数据源 -->
+		<!--		<property name="dataSource" ref="dataSource"/>-->
+	</bean>
+
+	<bean id="userDao" class="test.springsource.eight.dao.UserDao"/>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+		<bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer">
+			<property name="basePackage" value="test.springsource.nine.mapper"/>
+			<property name="processPropertyPlaceHolders" value="true"/>
+		</bean>
 </beans>

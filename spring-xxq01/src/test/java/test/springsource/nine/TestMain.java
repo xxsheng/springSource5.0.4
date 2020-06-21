@@ -31,6 +31,8 @@ public class TestMain {
 
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
+		Object jdbcTemplate = applicationContext.getBean("userService");
+		System.out.println(jdbcTemplate);
 		UserMapper bean = applicationContext.getBean(UserMapper.class);
 		bean.insertUser(new User("1", 2));
 		System.out.println(bean.getUser(1));
