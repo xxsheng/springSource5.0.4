@@ -1,39 +1,43 @@
 package test.springsource.eight.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.jdbc.core.JdbcTemplate;
 import test.springsource.eight.dao.UserDao;
 import test.springsource.eight.entity.User;
 
+import javax.sql.DataSource;
+import java.sql.Types;
 import java.util.List;
 
-@Component
+//@Component
 public class UserServiceImpl implements UserService {
 
 //	@Autowired
-//	private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
-//	public void setDataSource(DataSource dataSource) {
-//		this.jdbcTemplate = new JdbcTemplate(dataSource);
-//	}
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
 
-	@Autowired
+//	@Autowired
 	UserDao userDao;
 
 	@Override
-	@Transactional
-	public void save(List<User> user) {
-//		jdbcTemplate.update("insert into user(`name`, age, sex)values (?,?,?)", new Object[]{
-//				user.getName(),user.getAge(), user.getSex()}, new int[] {Types.VARCHAR, Types.INTEGER, Types.VARCHAR}
-//		);
-//		throw new RuntimeException("error");
-		for (User user1 : user) {
-			userDao.userSave(user1);
-		throw new RuntimeException("error");
+//	@Transactional
+	public void save(List<User> users) {
+		for (User user : users) {
 
+			jdbcTemplate.update("insert into user(`name`, age, sex)values (?,?,?)", new Object[]{
+					user.getName(),user.getAge(), user.getSex()}, new int[] {Types.VARCHAR, Types.INTEGER, Types.VARCHAR}
+			);
 		}
+//		throw new RuntimeException("error");
+//		for (User user1 : user) {
+//			userDao.userSave(user1);
+//		throw new RuntimeException("error");
+
+//		}
 	}
+
 
 	@Override
 	public List<User> getUsers() {

@@ -1,18 +1,21 @@
 package test.springsource.eight.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import test.springsource.eight.entity.User;
 
+import javax.sql.DataSource;
 import java.sql.Types;
 
-@Component
+//@Component
 public class UserDao {
 
-	@Autowired
+//	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
 
 	@Transactional
 	public void userSave(User user) {
@@ -20,5 +23,6 @@ public class UserDao {
 		jdbcTemplate.update("insert into user(`name`, age, sex)values (?,?,?)", new Object[]{
 				user.getName(),user.getAge(), user.getSex()}, new int[] {Types.VARCHAR, Types.INTEGER, Types.VARCHAR}
 		);
+		throw new RuntimeException("---");
 	}
 }

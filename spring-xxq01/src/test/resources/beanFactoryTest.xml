@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:myname="http://www.lexueba.com/schema/user" xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:myname="http://www.lexueba.com/schema/user"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
 	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.lexueba.com/schema/user http://www.lexueba.com/schema/user.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 	<description>sss</description>
 	<!--<bean id="myTestBean" class="domain.MyTestBean" />-->
 	<!--<bean  class="domain.MyTestBean" >
@@ -147,19 +150,21 @@
 	</bean>
 
 	<bean id="userService" class="test.springsource.eight.service.UserServiceImpl">
-		<!-- 注入数据源 -->
-<!--		<property name="dataSource" ref="dataSource"/>-->
-	</bean>
-
-	<bean id="userDao" class="test.springsource.eight.dao.UserDao"/>
-	<bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-		<constructor-arg index="0" ref="dataSource"/>
-	</bean>
-
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+<!--		 注入数据源-->
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
+
+	<bean id="userDao" class="test.springsource.eight.dao.UserDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+<!--	<bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">-->
+<!--		<constructor-arg index="0" ref="dataSource"/>-->
+<!--	</bean>-->
+
+<!--	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+<!--		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>-->
+<!--		<property name="dataSource" ref="dataSource"/>-->
+<!--	</bean>-->
 
 <!--	<bean id="userMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
 <!--		<property name="mapperInterface" value="test.springsource.nine.mapper.UserMapper"/>-->
@@ -167,8 +172,13 @@
 <!--	</bean>-->
 
 	<!-- scan 会将注解扫描器注册进来 -->
-	<bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="${basePackage}"/>
-		<property name="processPropertyPlaceHolders" value="true"/>
+<!--	<bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+<!--		<property name="basePackage" value="${basePackage}"/>-->
+<!--		<property name="processPropertyPlaceHolders" value="true"/>-->
+<!--	</bean>-->
+
+	<bean id="transactionManager1" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
 	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager1"/>
 </beans>
