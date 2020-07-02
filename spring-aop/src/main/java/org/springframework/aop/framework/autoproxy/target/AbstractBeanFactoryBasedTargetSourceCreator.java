@@ -16,13 +16,8 @@
 
 package org.springframework.aop.framework.autoproxy.target;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.AopInfrastructureBean;
 import org.springframework.aop.framework.autoproxy.TargetSourceCreator;
@@ -37,9 +32,13 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.lang.Nullable;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * Convenient superclass for
- * {@link TargetSourceCreator}
+ * {@link org.springframework.aop.framework.autoproxy.TargetSourceCreator}
  * implementations that require creating multiple instances of a prototype bean.
  *
  * <p>Uses an internal BeanFactory to manage the target instances,
@@ -52,7 +51,7 @@ import org.springframework.lang.Nullable;
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
- * @see AbstractBeanFactoryBasedTargetSource
+ * @see org.springframework.aop.target.AbstractBeanFactoryBasedTargetSource
  * @see org.springframework.beans.factory.support.AbstractBeanFactory
  */
 public abstract class AbstractBeanFactoryBasedTargetSourceCreator
@@ -181,7 +180,7 @@ public abstract class AbstractBeanFactoryBasedTargetSourceCreator
 	 * Return whether this TargetSourceCreator is prototype-based.
 	 * The scope of the target bean definition will be set accordingly.
 	 * <p>Default is "true".
-	 * @see BeanDefinition#isSingleton()
+	 * @see org.springframework.beans.factory.config.BeanDefinition#isSingleton()
 	 */
 	protected boolean isPrototypeBased() {
 		return true;
