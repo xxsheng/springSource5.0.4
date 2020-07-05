@@ -17,6 +17,9 @@ public class AspectJTest{
 	@Pointcut("execution(* test.*.chapter1.*.test(..))")
 	public void test(){}
 
+	@Pointcut("execution(* test.*.eight.service.*.save(..))")
+	public void testTransa(){}
+
 	@Before("test()")
 	public void beforeTest() {
 		System.out.println("beforeTest");
@@ -43,4 +46,10 @@ public class AspectJTest{
 //		return o;
 //	}
 
+	@Before("testTransa()")
+	public void beforeTest1() {
+		System.out.println("beforeTest");
+//		throw new RuntimeException();
+//		return;
+	}
 }
