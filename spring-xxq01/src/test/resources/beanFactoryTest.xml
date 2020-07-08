@@ -181,4 +181,13 @@
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager1"/>
+
+	<bean id="dynamicDataSource" class="test.springsource.ten.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String" value-type="javax.sql.DataSource">
+				<entry key="test1" value-ref="dataSource"/>
+
+			</map>
+		</property>
+	</bean>
 </beans>
