@@ -7,7 +7,7 @@ import test.springsource.eight.entity.User;
 import java.util.List;
 
 @Transactional(propagation = Propagation.REQUIRED)
-public interface UserService {
+public interface UserService<String, Long> {
 	void save(List<User> user);
 
 	List<User> getUsers();

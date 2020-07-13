@@ -9,7 +9,7 @@ import java.sql.Types;
 import java.util.List;
 
 //@Component
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService<String, Long> {
 
 //	@Autowired
 	private JdbcTemplate jdbcTemplate;

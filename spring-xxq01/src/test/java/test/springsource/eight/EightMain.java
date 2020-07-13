@@ -1,7 +1,7 @@
 package test.springsource.eight;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import test.springsource.eight.entity.User;
 import test.springsource.eight.service.UserService;
 
@@ -14,8 +14,8 @@ public class EightMain {
 //		Test1 test1 = (Test1) ac.getBean("test1");
 //		System.out.println(test1);
 
-//		ApplicationContext ac = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
-		ApplicationContext ac = new AnnotationConfigApplicationContext(Appconfig.class);
+		ApplicationContext ac = new ClassPathXmlApplicationContext("beanFactoryTest.xml");
+//		ApplicationContext ac = new AnnotationConfigApplicationContext(Appconfig.class);
 		UserService userService = (UserService) ac.getBean(UserService.class);
 		User user = new User();
 		user.setAge(108);
