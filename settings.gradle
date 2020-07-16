@@ -49,4 +49,6 @@ rootProject.children.each {project ->
 	project.buildFileName = "${project.name}.gradle"
 }
 include 'spring-xxq01'
+include 'spring-ssm'
+include 'spring-ssm'
 
