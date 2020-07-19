@@ -807,6 +807,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @param event the incoming ApplicationContext event
 	 */
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+		// 标志容器是否已经被刷新
 		this.refreshEventReceived = true;
 		onRefresh(event.getApplicationContext());
 	}
