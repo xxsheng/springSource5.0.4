@@ -11,8 +11,8 @@
 <!--	</context:component-scan>-->
 
 	<!--    升级适配器-->
-<!--	<mvc:annotation-driven></mvc:annotation-driven>-->
-	<mvc:default-servlet-handler default-servlet-name="default"></mvc:default-servlet-handler>
+	<mvc:annotation-driven></mvc:annotation-driven>
+<!--	<mvc:default-servlet-handler default-servlet-name="default"></mvc:default-servlet-handler>-->
 
 
 
@@ -54,10 +54,12 @@
 		<property name="mappings">
 			<props>
 				<prop key="/userList.htm">userController</prop>
+				<prop key="/*.htm">userControllerTest</prop>
 			</props>
 		</property>
 	</bean>
 
 	<bean id="userController" class="com.xxq.resource.UserController"/>
+	<bean id="userControllerTest" class="com.xxq.resource.UserControllerTest"/>
 
 </beans>
