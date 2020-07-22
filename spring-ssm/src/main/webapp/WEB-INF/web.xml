@@ -41,6 +41,10 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<listener>
+		<listener-class>com.xxq.listener.MyDataContextListener</listener-class>
+	</listener>
+
 	<!-- Springmvc的前端控制器 -->
 	<!-- 当DispatcherServlet载入后，它将一个xml文件中载入spring应用上下文，该xml文件的名字取决于<servlet-name> -->
 	<!-- 这里dispatcherServlet将试图从一个叫Springmvc-servlet.xml的文件中载入应用上下文，其默认位于web-inf目录下 -->

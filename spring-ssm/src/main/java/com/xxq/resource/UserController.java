@@ -21,6 +21,7 @@ public class UserController extends AbstractController {
 
 		userList.add(user1);
 		userList.add(user2);
+		request.getServletContext().getAttribute("myData");
 		return new ModelAndView("userList", "users", userList);
 	}
 }
