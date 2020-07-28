@@ -154,6 +154,31 @@ import org.springframework.web.util.WebUtils;
  * @see org.springframework.web.servlet.mvc.Controller
  * @see org.springframework.web.context.ContextLoaderListener
  */
+
+/**
+ * 1、初始化阶段
+ * servletr容器加载servlet类，把servlet类的.class文件中的数据读到内存中。
+ * servlet容器创建一个ServletConfig对象，ServletConfig对象包含了servlet的初始化配置信息。
+ * servlet容器创建一个servlet对象
+ * servlet容器调用servlet对象的init方法进行初始化
+ *
+ * 2、运行阶段
+ * 当servlet容器接收到一个请求时，servlet容器会针对这个请求创建servletRequest和servletResponse对象，然后调用service方法。并把这俩个参数
+ * 传递给service方法，service方法通过servletRequest对象获得请求的信息，并处理该请求。再通过servletResponse对象生成这个请求的响应结果。然后
+ * 销毁servletRequest和servletResponse对象，我们不管这个请求是post还是get提交的，最终这个请求都会由service方法来处理。
+ *
+ * 3、销毁阶段
+ * 	当web应用被终止时，servlet应用会先调用servlet对象的destroy方法，然后在销毁servlet对象，同时也会销毁与servlet对象相关联的servletconfig对象。
+ * 我们可以在destroy方法的实现中，释放servlet所占用的资源，如关闭数据库链接，关闭文件输入输出流等。
+ * 	servlet的框架是由俩个java包组成：javax.servlet和java.servlet.http.在javax.servlet包中定义了所有servlet类都必须实现或扩展的通用接口和类。
+ * 在javax.servlet.http包中定义了采用http通信协议的httpservlet类。
+ * 	servlet被设计成请求驱动，servlet的请求可能包含多个数据项，当web容器接收到某个servlet请求时，servlet把请求封装成一个httpservletrequest对象，然后把对象
+ * 传给servlet对应的服务方法。
+ * 	http请求方式包括delete，get，options，post，put和trace，在httpservlet类中分别提供了相应的服务方法，它们是doDelete，doGet，DoOptions，DoPost，
+ * doPut和doTrace。
+ *
+ *
+ */
 @SuppressWarnings("serial")
 public class DispatcherServlet extends FrameworkServlet {
 
