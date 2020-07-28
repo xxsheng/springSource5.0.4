@@ -54,7 +54,7 @@
 		<property name="mappings">
 			<props>
 				<prop key="/userList.htm">userController</prop>
-				<prop key="/*.htm">userControllerTest</prop>
+<!--				<prop key="/*.htm">userControllerTest</prop>-->
 			</props>
 		</property>
 	</bean>
