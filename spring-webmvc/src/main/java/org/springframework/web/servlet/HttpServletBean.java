@@ -162,7 +162,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				bw.registerCustomEditor(Resource.class, new ResourceEditor(resourceLoader, getEnvironment()));
 				// 空实现，留给子类覆盖
 				initBeanWrapper(bw);
-				// 属性注入
+				// 属性注入（contextAttribute, contextclass, namespace, contextConfigLocation）
 				bw.setPropertyValues(pvs, true);
 			}
 			catch (BeansException ex) {
@@ -174,7 +174,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 		}
 
 		// Let subclasses do whatever initialization they like.
-		// 留给子类扩展
+		// 留给子类扩展(servletBean的初始化)
 		initServletBean();
 
 		if (logger.isDebugEnabled()) {
@@ -243,6 +243,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				}
 			}
 
+			// 命中策略，挺实用的一个想法
 			// Fail if we are still missing properties.
 			if (!CollectionUtils.isEmpty(missingProps)) {
 				throw new ServletException(
