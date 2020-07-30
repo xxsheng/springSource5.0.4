@@ -520,14 +520,23 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		// 1、初始化MultipartResolver
 		initMultipartResolver(context);
+		// 2、初始化LocaleResolver
 		initLocaleResolver(context);
+		// 3、初始化ThemeResolver
 		initThemeResolver(context);
+		// 4、初始化handlerMappings
 		initHandlerMappings(context);
+		// 5、初始化HandlerAdapters
 		initHandlerAdapters(context);
+		// 6、初始化HandlerExceptionResolvers
 		initHandlerExceptionResolvers(context);
+		// 7、初始化requestToViewNameTranslator
 		initRequestToViewNameTranslator(context);
+		// 8、初始化ViewResolvers
 		initViewResolvers(context);
+		// 9、初始化flashMapManager
 		initFlashMapManager(context);
 	}
 
@@ -557,6 +566,25 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * Initialize the LocaleResolver used by this class.
 	 * <p>If no bean is defined with the given name in the BeanFactory for this namespace,
 	 * we default to AcceptHeaderLocaleResolver.
+	 */
+	/**
+	 *
+	 * 1、基于url参数的配置
+	 * 通过url参数来控制国际化，比如在页面上<a href="?local=zh_CN">简体中文</a>来控制项目中使用的国际化参数。而提供这个功能的就是
+	 * AcceptHeaderLocaleResolver，默认参数名为locale，注意大小写。里面放的就是我们提交的参数，比如en_US,zh_CN之类的
+	 * <bean id="localeResolver" class="org.Springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"/>
+	 *
+	 * 2、基于session的配置
+	 * 基于会话中预置的属性来解析区域，登陆时候选择的语言类型，整个登陆周期内统一使用此语言。如果会话属性不存在，则根据accept-languageHttp
+	 * 头部确定默认区域
+	 * {@see org.springframework.web.servlet.i18n.SessionLocaleResolver}
+	 *
+	 * 3、基于cookie的国际化
+	 * 通过浏览器的cookie设置取得Locale对象，这种策略在应用程序不支持会话或者状态必须保存在客户端时候才有用
+	 * {@see org.springframework.web.servlet.i18n.CookieLocaleResolver}
+	 *
+	 *
+	 * @param context
 	 */
 	private void initLocaleResolver(ApplicationContext context) {
 		try {

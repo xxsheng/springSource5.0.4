@@ -551,6 +551,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// 通过在web.xml文件中配置的servlet参数contextattribute来查找ServletContext中对应的属性。
 			wac = findWebApplicationContext();
 		}
+		// 创建容器
 		if (wac == null) {
 			// No context instance is defined for this servlet -> create a local one
 			wac = createWebApplicationContext(rootContext);
@@ -560,6 +561,8 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			// Either the context is not a ConfigurableApplicationContext with refresh
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
+			// onrefresh是frameworkServlet类中提供的模板方法，在其子类DispatcherServlet中进行了重写，主要用于刷新Spring在web中
+			// 功能中所必须使用的全局变量。
 			onRefresh(wac);
 		}
 
@@ -663,6 +666,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 
 		wac.setServletContext(getServletContext());
 		wac.setServletConfig(getServletConfig());
+		// application的namespace
 		wac.setNamespace(getNamespace());
 		wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));
 
@@ -674,8 +678,11 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			((ConfigurableWebEnvironment) env).initPropertySources(getServletContext(), getServletConfig());
 		}
 
+		// 子类覆盖
 		postProcessWebApplicationContext(wac);
+		// ApplicationContextInitializer扩展类的处理
 		applyInitializers(wac);
+		// 初始化容器
 		wac.refresh();
 	}
 
