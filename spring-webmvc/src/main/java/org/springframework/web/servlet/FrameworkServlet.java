@@ -877,7 +877,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	@Override
 	protected final void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+ 		// 对于不同的方法，spring并没有做特殊的处理，而是统一的将程序再一次的引导至processRequest中
 		processRequest(request, response);
 	}
 
@@ -970,13 +970,14 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 */
 	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		// 记录当前时间 用于计算web请求的处理时间
 		long startTime = System.currentTimeMillis();
 		Throwable failureCause = null;
-
+		// 1、提取线程conctext属性
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
+		// 2、根据当前请求request创建对应的localcontext和attribute属性，并绑定到当前线程
 		LocaleContext localeContext = buildLocaleContext(request);
-
+		// 1、提取线程attribute属性，保证当前请求结束后恢复原有
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
 
@@ -986,6 +987,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
+			// 3、委托给doservice方法进一步处理
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {
@@ -998,6 +1000,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		}
 
 		finally {
+			// 4、请求接受后恢复线程到原始状态
 			resetContextHolders(request, previousLocaleContext, previousAttributes);
 			if (requestAttributes != null) {
 				requestAttributes.requestCompleted();
@@ -1017,6 +1020,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 				}
 			}
 
+			// 发布事件通知
 			publishRequestHandledEvent(request, response, startTime, failureCause);
 		}
 	}

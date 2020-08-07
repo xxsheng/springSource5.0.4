@@ -608,6 +608,20 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>If no bean is defined with the given name in the BeanFactory for this namespace,
 	 * we default to a FixedThemeResolver.
 	 */
+	/**
+	 *
+	 * FixedThemeResolver 用于选择一个固定得主题
+	 * <bean id="themeResolver" class="org.springframework.web.servlet.theme.FixedThemeResolver">
+	 *     <property name="defaultThemeName" value="summer"/>
+	 *     </bean>
+	 *     以上设置得作用就是设置主题文件为summer.properties，在整个项目内固定不变
+	 *
+	 * CookieThemeResolver用于实现用户所选得主题，以cookie得形式存放在客户端得机器上
+	 *
+	 *SessionThemeResolver用于主题保存在用户得http Session中
+	 *
+	 * AbstractThemeResolver是一个抽象类被SessionThemeResolver和FixedThemeResolver继承，用户可以继承他来实现自定义主题解析器
+	 */
 	private void initThemeResolver(ApplicationContext context) {
 		try {
 			this.themeResolver = context.getBean(THEME_RESOLVER_BEAN_NAME, ThemeResolver.class);
@@ -667,6 +681,19 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * Initialize the HandlerAdapters used by this class.
 	 * <p>If no HandlerAdapter beans are defined in the BeanFactory for this namespace,
 	 * we default to SimpleControllerHandlerAdapter.
+	 */
+	/**
+	 * 1、HttpRequestHandlerAdapter
+	 * http请求处理器适配器仅仅支持对http请求处理器得适配，它简单得将http请求对象和响应对象传递给http请求处理器的实现，他并不需要返回值，
+	 * 它主要应用于http的远程应用的是线上。
+	 *
+	 * 2、SimpleControllerHandlerAdapter
+	 * 这个实现类将http请求适配到一个控制器的实现进行处理，这里的控制器的实现是一个简单的控制器接口的实现。简单控制处理适配器被设计成一个框架
+	 * 类的实现，不需要被改写，客户化的业务逻辑通常是在控制器接口的实现类中实现的
+	 *
+	 * 3、注解方法处理适配器AnnotationMethodHandlerAdapter
+	 *
+	 * @param context
 	 */
 	private void initHandlerAdapters(ApplicationContext context) {
 		this.handlerAdapters = null;
