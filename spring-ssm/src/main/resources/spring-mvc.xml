@@ -5,10 +5,10 @@
 	   xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!--    扫描组件-->
-<!--	<context:component-scan base-package="main" use-default-filters="false">-->
-<!--		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
-<!--	</context:component-scan>-->
+	    <!--扫描组件 -->
+	<context:component-scan base-package="com.xxq.resource" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 
 	<!--    升级适配器-->
 	<mvc:annotation-driven></mvc:annotation-driven>
@@ -55,11 +55,13 @@
 			<props>
 				<prop key="/userList.htm">userController</prop>
 <!--				<prop key="/*.htm">userControllerTest</prop>-->
+				<prop key="/upload.do">upLoadFileController</prop>
 			</props>
 		</property>
 	</bean>
 
 	<bean id="userController" class="com.xxq.resource.UserController"/>
 	<bean id="userControllerTest" class="com.xxq.resource.UserControllerTest"/>
+	<bean id="upLoadFileController" class="com.xxq.resource.UploadFileController"/>
 
 </beans>

@@ -256,6 +256,7 @@ public class ModelAndViewContainer {
 	 * argument of type {@code ServletResponse} or {@code OutputStream}).
 	 * <p>The default value is {@code false}.
 	 */
+	// 通过此标识来判断是否是requestbody等返回视图
 	public void setRequestHandled(boolean requestHandled) {
 		this.requestHandled = requestHandled;
 	}
