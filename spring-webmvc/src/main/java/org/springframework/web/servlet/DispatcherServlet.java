@@ -1040,6 +1040,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			try {
 				// 如果是multipartContext的request则转换为request为MultipartHttpServletRequest类的的request
 				processedRequest = checkMultipart(request);
+				// 如果request不是同一个对象，则表示已经被multipart处理过
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
@@ -1269,6 +1270,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					logger.trace(
 							"Testing handler map [" + hm + "] in DispatcherServlet with name '" + getServletName() + "'");
 				}
+				// SimpleUrlHandlerMapping举例
 				HandlerExecutionChain handler = hm.getHandler(request);
 				if (handler != null) {
 					return handler;
