@@ -5,6 +5,7 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.junit.Test;
 
+import javax.servlet.ServletException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -31,7 +32,7 @@ public class TestMain {
 		proxy.sayHello();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ServletException {
 		Tomcat tomcat = new Tomcat();
 		tomcat.setPort(6090);
 		tomcat.addWebapp("/", "d:\\");

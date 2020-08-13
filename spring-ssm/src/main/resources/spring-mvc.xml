@@ -23,17 +23,17 @@
 	</bean>
 
 	<!--    配置拦截器-->
-<!--	<mvc:interceptors>-->
-<!--		&lt;!&ndash;   为所有请求设置拦截器&ndash;&gt;-->
-<!--		<bean id="firstHandlerInterceptor" class="main.controller.FirstHandlerInterceptor"></bean>-->
-<!--		&lt;!&ndash;        <mvc:interceptor>&ndash;&gt;-->
-<!--		&lt;!&ndash;     表示指定拦截器只拦截/test/下的所有请求&ndash;&gt;-->
-<!--		&lt;!&ndash;            <mvc:mapping path="/test/**/"/>&ndash;&gt;-->
-<!--		&lt;!&ndash;     表示访问/test/test.do的请求不会触发拦截器&ndash;&gt;-->
-<!--		&lt;!&ndash;            <mvc:exclude-mapping path="/test/test.do"/>&ndash;&gt;-->
-<!--		&lt;!&ndash;            <bean id="testInterceptor" class="main.controller.TestInterceptor"></bean>&ndash;&gt;-->
-<!--		&lt;!&ndash;        </mvc:interceptor>&ndash;&gt;-->
-<!--	</mvc:interceptors>-->
+	<mvc:interceptors>
+		<!--   为所有请求设置拦截器-->
+		<bean id="firstHandlerInterceptor" class="com.xxq.interceptor.MyInterceptor"></bean>
+		<!--        <mvc:interceptor>-->
+		<!--     表示指定拦截器只拦截/test/下的所有请求-->
+		<!--            <mvc:mapping path="/test/**/"/>-->
+		<!--     表示访问/test/test.do的请求不会触发拦截器-->
+		<!--            <mvc:exclude-mapping path="/test/test.do"/>-->
+		<!--            <bean id="testInterceptor" class="main.controller.TestInterceptor"></bean>-->
+		<!--        </mvc:interceptor>-->
+	</mvc:interceptors>
 
 	<!--    配置异常解析器-->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
