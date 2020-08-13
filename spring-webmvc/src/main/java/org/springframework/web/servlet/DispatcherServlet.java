@@ -1046,12 +1046,14 @@ public class DispatcherServlet extends FrameworkServlet {
 				// Determine handler for the current request.
 				// 根据request信息寻找对应的handler
 				mappedHandler = getHandler(processedRequest);
+				// 没找到对应的handler的错误处理，默认返回404
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
 				// Determine handler adapter for the current request.
+				// 推断handlerAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
