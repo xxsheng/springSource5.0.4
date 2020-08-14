@@ -271,6 +271,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 							genericConverter.write(outputValue, declaredType, selectedMediaType, outputMessage);
 						}
 						else {
+							// 此处写入json返回值
 							((HttpMessageConverter) converter).write(outputValue, selectedMediaType, outputMessage);
 						}
 						if (logger.isDebugEnabled()) {

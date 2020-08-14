@@ -138,6 +138,7 @@ public class InternalResourceView extends AbstractUrlBasedView {
 			Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// Expose the model object as request attributes.
+		// 将model中得属性设置到request中
 		exposeModelAsRequestAttributes(model, request);
 
 		// Expose helpers as request attributes, if any.
@@ -159,6 +160,7 @@ public class InternalResourceView extends AbstractUrlBasedView {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Including resource [" + getUrl() + "] in InternalResourceView '" + getBeanName() + "'");
 			}
+			// include
 			rd.include(request, response);
 		}
 
@@ -167,6 +169,7 @@ public class InternalResourceView extends AbstractUrlBasedView {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Forwarding to resource [" + getUrl() + "] in InternalResourceView '" + getBeanName() + "'");
 			}
+			// 转发
 			rd.forward(request, response);
 		}
 	}
