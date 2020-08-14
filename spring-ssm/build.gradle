@@ -46,5 +46,7 @@ dependencies {
     // https://mvnrepository.com/artifact/taglibs/standard
     compile group: 'taglibs', name: 'standard', version: '1.1.2'
 
-
+//    optional("org.apache.logging.log4j:log4j-api:${log4jVersion}")
+    optional("org.slf4j:slf4j-api:${slf4jVersion}")
+    optional("com.google.code.gson:gson:2.8.2")
 }

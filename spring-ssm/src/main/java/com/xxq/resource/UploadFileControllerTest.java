@@ -18,7 +18,8 @@ import java.io.InputStream;
 public class UploadFileControllerTest {
 
 	@PostMapping("/test/upload")
-	public void test1( MultipartFile multipartFile) throws IOException {
+	@ResponseBody
+	public String test1( MultipartFile multipartFile) throws IOException {
 		String originalFilename = multipartFile.getOriginalFilename();
 		InputStream inputStream = multipartFile.getInputStream();
 		File file = new File("D:/02_document/xx.jpg");
@@ -37,6 +38,7 @@ public class UploadFileControllerTest {
 		} else {
 
 		}
+		return "0000";
 	}
 
 	@GetMapping("/abc/{id}/dd")

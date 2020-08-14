@@ -1,5 +1,8 @@
 package com.xxq.servlet;
 
+import com.google.gson.Gson;
+import com.xxq.domain.User;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -31,10 +34,15 @@ public class MyServlet extends HttpServlet {
 		RequestDispatcher rd = null;
 		rd = servletContext.getRequestDispatcher("/index.jsp");// 定向的页面
 		try {
-			rd.forward(request, response);
-		} catch (ServletException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+//			rd.forward(request, response);
+//			response.sendRedirect("/index.jsp");
+			System.out.println("--------------------");
+			User user = new User();
+			user.setAge(11);
+			user.setUsername("2222");
+			Gson gson = new Gson();
+			response.getWriter().write(gson.toJson(user));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

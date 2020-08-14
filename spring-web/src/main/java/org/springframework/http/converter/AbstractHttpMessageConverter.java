@@ -227,6 +227,7 @@ public abstract class AbstractHttpMessageConverter<T> implements HttpMessageConv
 			});
 		}
 		else {
+			// 此处写入json，rest请求
 			writeInternal(t, outputMessage);
 			outputMessage.getBody().flush();
 		}
