@@ -1,4 +1,4 @@
-package org.springframework.client;
+package org.springframework.rmi.client;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.rmi.xxq.service.HelloRMIService;

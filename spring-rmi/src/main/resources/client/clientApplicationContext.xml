@@ -5,7 +5,7 @@
 
 	<!-- 客户端 -->
 	<bean id="myClient" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
-		<property name="serviceUrl" value="//172.31.250.213:9999/helloRMI"/>
+		<property name="serviceUrl" value="//192.168.137.1:9999/helloRMI"/>
 		<property name="serviceInterface" value="org.springframework.rmi.xxq.service.HelloRMIService"/>
 	</bean>
 </beans>

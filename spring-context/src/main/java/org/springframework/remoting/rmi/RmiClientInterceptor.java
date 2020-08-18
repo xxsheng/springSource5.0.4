@@ -132,6 +132,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 
 	@Override
 	public void afterPropertiesSet() {
+		// 验证serverUrl是否为空
 		super.afterPropertiesSet();
 		prepare();
 	}
@@ -144,7 +145,9 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 	 */
 	public void prepare() throws RemoteLookupFailureException {
 		// Cache RMI stub on initialization?
+		// 是否缓存rmi在初始化
 		if (this.lookupStubOnStartup) {
+			// 获取stub
 			Remote remoteObj = lookupStub();
 			if (logger.isDebugEnabled()) {
 				if (remoteObj instanceof RmiInvocationHandler) {
@@ -157,6 +160,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 						(!isImpl ? "not " : "") + "directly implemented");
 				}
 			}
+			// 是否缓存
 			if (this.cacheStub) {
 				this.cachedStub = remoteObj;
 			}
@@ -183,12 +187,16 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 				// that we need to parse the RMI URL ourselves and perform
 				// straight LocateRegistry.getRegistry/Registry.lookup calls.
 				URL url = new URL(null, getServiceUrl(), new DummyURLStreamHandler());
+				// 验证传输协议
 				String protocol = url.getProtocol();
 				if (protocol != null && !"rmi".equals(protocol)) {
 					throw new MalformedURLException("Invalid URL scheme '" + protocol + "'");
 				}
+				// 主机
 				String host = url.getHost();
+				// 端口
 				int port = url.getPort();
+				// 服务名
 				String name = url.getPath();
 				if (name != null && name.startsWith("/")) {
 					name = name.substring(1);
@@ -230,11 +238,13 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 	 */
 	protected Remote getStub() throws RemoteLookupFailureException {
 		if (!this.cacheStub || (this.lookupStubOnStartup && !this.refreshStubOnConnectFailure)) {
+			// 如果有缓存直接使用缓存
 			return (this.cachedStub != null ? this.cachedStub : lookupStub());
 		}
 		else {
 			synchronized (this.stubMonitor) {
 				if (this.cachedStub == null) {
+					// 获取stub
 					this.cachedStub = lookupStub();
 				}
 				return this.cachedStub;
@@ -256,6 +266,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 	 */
 	@Override
 	public Object invoke(MethodInvocation invocation) throws Throwable {
+		// 获取的服务器中对应得注册的remote对象，通过序列化传输
 		Remote stub = getStub();
 		try {
 			return doInvoke(invocation, stub);
@@ -343,6 +354,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 	 */
 	@Nullable
 	protected Object doInvoke(MethodInvocation invocation, Remote stub) throws Throwable {
+		// stub从服务器传回且经过Spring的封装
 		if (stub instanceof RmiInvocationHandler) {
 			// RMI invoker
 			try {
@@ -364,6 +376,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 		}
 		else {
 			// traditional RMI stub
+			// 原始rmi 直接使用反射激活
 			try {
 				return RmiClientInterceptorUtils.invokeRemoteMethod(invocation, stub);
 			}
@@ -400,7 +413,7 @@ public class RmiClientInterceptor extends RemoteInvocationBasedAccessor
 		if (AopUtils.isToStringMethod(methodInvocation.getMethod())) {
 			return "RMI invoker proxy for service URL [" + getServiceUrl() + "]";
 		}
-
+		// 将methodinvocation中的方法名及参数等信息重新封装到RemoteInvocation，并通过远程代理方法直接调用
 		return invocationHandler.invoke(createRemoteInvocation(methodInvocation));
 	}
 
