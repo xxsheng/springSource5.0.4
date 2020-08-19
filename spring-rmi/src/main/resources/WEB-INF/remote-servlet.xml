@@ -5,6 +5,6 @@
 
 	<bean id="/hit" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
 		<property name="service" ref="httpinvokertest"/>
-		<property name="serviceInterface" value="org.springframework.rmi.xxq.service.HttpInvokerTest"/>
+		<property name="serviceInterface" value="org.springframework.server.httpinvoker.HttpInvokerTest"/>
 	</bean>
 </beans>

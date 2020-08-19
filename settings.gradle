@@ -50,7 +50,6 @@ rootProject.children.each {project ->
 }
 include 'spring-xxq01'
 include 'spring-ssm'
-include 'spring-ssm'
 include 'spring-rmi'
 include 'spring-rmi-web'
 
