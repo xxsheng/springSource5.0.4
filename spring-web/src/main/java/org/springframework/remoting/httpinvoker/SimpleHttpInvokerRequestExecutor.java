@@ -85,12 +85,18 @@ public class SimpleHttpInvokerRequestExecutor extends AbstractHttpInvokerRequest
 			HttpInvokerClientConfiguration config, ByteArrayOutputStream baos)
 			throws IOException, ClassNotFoundException {
 
+		// 构建connection
 		HttpURLConnection con = openConnection(config);
+		// 做一些前置工作
 		prepareConnection(con, baos.size());
+		// 将数据写入到request中
 		writeRequestBody(config, con, baos);
+		// 校验和请求
 		validateResponse(config, con);
+		// 读取输入流
 		InputStream responseBody = readResponseBody(config, con);
 
+		// 从输入流中提取结果
 		return readRemoteInvocationResult(responseBody, config.getCodebaseUrl());
 	}
 
@@ -123,6 +129,7 @@ public class SimpleHttpInvokerRequestExecutor extends AbstractHttpInvokerRequest
 	 * @see java.net.HttpURLConnection#setRequestProperty
 	 */
 	protected void prepareConnection(HttpURLConnection connection, int contentLength) throws IOException {
+		// 设置超时时间
 		if (this.connectTimeout >= 0) {
 			connection.setConnectTimeout(this.connectTimeout);
 		}
@@ -132,6 +139,7 @@ public class SimpleHttpInvokerRequestExecutor extends AbstractHttpInvokerRequest
 
 		connection.setDoOutput(true);
 		connection.setRequestMethod(HTTP_METHOD_POST);
+		// 设置类型
 		connection.setRequestProperty(HTTP_HEADER_CONTENT_TYPE, getContentType());
 		connection.setRequestProperty(HTTP_HEADER_CONTENT_LENGTH, Integer.toString(contentLength));
 
@@ -181,6 +189,7 @@ public class SimpleHttpInvokerRequestExecutor extends AbstractHttpInvokerRequest
 	protected void validateResponse(HttpInvokerClientConfiguration config, HttpURLConnection con)
 			throws IOException {
 
+		// 大于300则是非正常的响应码
 		if (con.getResponseCode() >= 300) {
 			throw new IOException(
 					"Did not receive successful HTTP response: status code = " + con.getResponseCode() +
@@ -207,6 +216,7 @@ public class SimpleHttpInvokerRequestExecutor extends AbstractHttpInvokerRequest
 	protected InputStream readResponseBody(HttpInvokerClientConfiguration config, HttpURLConnection con)
 			throws IOException {
 
+		// 根据不同情况进行提取数据
 		if (isGzipResponse(con)) {
 			// GZIP response found - need to unzip.
 			return new GZIPInputStream(con.getInputStream());

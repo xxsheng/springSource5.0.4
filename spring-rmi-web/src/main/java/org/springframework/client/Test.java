@@ -7,8 +7,9 @@ public class Test {
 	public static void main(String[] args) {
 		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("applicationContext-client.xml");
 		HttpInvokerTest remoteService = classPathXmlApplicationContext.getBean("remoteService", HttpInvokerTest.class);
-
-		String dddd = remoteService.getTestPo("dddd");
+		String dddd;
+//		dddd = remoteService.toString();
+		dddd = remoteService.getTestPo("dddd");
 		System.out.println(dddd);
 	}
 }
