@@ -75,8 +75,11 @@ public class HttpInvokerServiceExporter extends RemoteInvocationSerializingExpor
 			throws ServletException, IOException {
 
 		try {
+			// 从request中读取序列化对象
 			RemoteInvocation invocation = readRemoteInvocation(request);
+			// 执行调用
 			RemoteInvocationResult result = invokeAndCreateResult(invocation, getProxy());
+			// 将结果的序列化对象写入到输出流
 			writeRemoteInvocationResult(request, response, result);
 		}
 		catch (ClassNotFoundException ex) {
@@ -96,6 +99,7 @@ public class HttpInvokerServiceExporter extends RemoteInvocationSerializingExpor
 	protected RemoteInvocation readRemoteInvocation(HttpServletRequest request)
 			throws IOException, ClassNotFoundException {
 
+		// 从输入流中读取序列化对象
 		return readRemoteInvocation(request, request.getInputStream());
 	}
 
@@ -115,6 +119,7 @@ public class HttpInvokerServiceExporter extends RemoteInvocationSerializingExpor
 	protected RemoteInvocation readRemoteInvocation(HttpServletRequest request, InputStream is)
 			throws IOException, ClassNotFoundException {
 
+		// 创建对象输入流
 		ObjectInputStream ois = createObjectInputStream(decorateInputStream(request, is));
 		try {
 			return doReadRemoteInvocation(ois);
@@ -150,6 +155,7 @@ public class HttpInvokerServiceExporter extends RemoteInvocationSerializingExpor
 			throws IOException {
 
 		response.setContentType(getContentType());
+		// 将结果写入到输出流
 		writeRemoteInvocationResult(request, response, result, response.getOutputStream());
 	}
 
@@ -172,9 +178,11 @@ public class HttpInvokerServiceExporter extends RemoteInvocationSerializingExpor
 			HttpServletRequest request, HttpServletResponse response, RemoteInvocationResult result, OutputStream os)
 			throws IOException {
 
+		// 获取输出流
 		ObjectOutputStream oos =
 				createObjectOutputStream(new FlushGuardedOutputStream(decorateOutputStream(request, response, os)));
 		try {
+			// 将序列化对象写入到输出流
 			doWriteRemoteInvocationResult(result, oos);
 		}
 		finally {
