@@ -165,6 +165,7 @@ public abstract class JmsAccessor implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() {
+		// 验证链接是否存在
 		if (getConnectionFactory() == null) {
 			throw new IllegalArgumentException("Property 'connectionFactory' is required");
 		}
