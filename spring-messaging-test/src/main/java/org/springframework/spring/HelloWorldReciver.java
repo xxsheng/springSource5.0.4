@@ -18,6 +18,6 @@ public class HelloWorldReciver {
 			}
 		});
 		TextMessage receive = (TextMessage) jmsTemplate.receive(destination);
-		System.out.println(receive.getText());
+		System.out.println(receive.getText()+"------");
 	}
 }

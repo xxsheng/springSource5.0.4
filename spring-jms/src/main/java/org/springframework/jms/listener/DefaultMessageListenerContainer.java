@@ -1185,8 +1185,10 @@ public class DefaultMessageListenerContainer extends AbstractPollingMessageListe
 		}
 
 		private boolean invokeListener() throws JMSException {
+			// 初始化资源包括首次创建的时候需要创建session和consumer
 			initResourcesIfNecessary();
 			boolean messageReceived = receiveAndExecute(this, this.session, this.consumer);
+			// 改变标志位，信息处理成功
 			this.lastMessageSucceeded = true;
 			return messageReceived;
 		}
