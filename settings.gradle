@@ -53,4 +53,5 @@ include 'spring-ssm'
 include 'spring-rmi'
 include 'spring-rmi-web'
 include 'spring-messaging-test'
+include 'spring-boot-test-xxq'
 
