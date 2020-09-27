@@ -162,6 +162,7 @@ class ConfigurationClassParser {
 		for (BeanDefinitionHolder holder : configCandidates) {
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
+				// 根据不同类型的bdf走不同的解析方法
 				if (bd instanceof AnnotatedBeanDefinition) {
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
@@ -213,11 +214,13 @@ class ConfigurationClassParser {
 	}
 
 
+	// 解析configClass
 	protected void processConfigurationClass(ConfigurationClass configClass) throws IOException {
+		// 判断是否需要跳过
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
-
+		// 是否已经存在
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
@@ -235,6 +238,7 @@ class ConfigurationClassParser {
 			}
 		}
 
+		// 得到sourceclass，主要是class的一些类信息
 		// Recursively process the configuration class and its superclass hierarchy.
 		SourceClass sourceClass = asSourceClass(configClass);
 		do {
@@ -258,9 +262,11 @@ class ConfigurationClassParser {
 			throws IOException {
 
 		// Recursively process any member (nested) classes first
+		// 处理内部类
 		processMemberClasses(configClass, sourceClass);
 
 		// Process any @PropertySource annotations
+		// 处理propertySources
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
@@ -274,6 +280,7 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @ComponentScan annotations
+		// 扫描@componentscan,有重复的则覆盖，优先取最近的
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() &&
@@ -335,10 +342,12 @@ class ConfigurationClassParser {
 	 * Register member (nested) classes that happen to be configuration classes themselves.
 	 */
 	private void processMemberClasses(ConfigurationClass configClass, SourceClass sourceClass) throws IOException {
+		// 得到该类的所有内部类
 		Collection<SourceClass> memberClasses = sourceClass.getMemberClasses();
 		if (!memberClasses.isEmpty()) {
 			List<SourceClass> candidates = new ArrayList<>(memberClasses.size());
 			for (SourceClass memberClass : memberClasses) {
+				// 是配置类且不同名于当前public类
 				if (ConfigurationClassUtils.isConfigurationCandidate(memberClass.getMetadata()) &&
 						!memberClass.getMetadata().getClassName().equals(configClass.getMetadata().getClassName())) {
 					candidates.add(memberClass);

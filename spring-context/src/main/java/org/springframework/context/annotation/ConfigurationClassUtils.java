@@ -88,6 +88,7 @@ abstract class ConfigurationClassUtils {
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
+			// 定义bd的时候已经解析了metadata
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
@@ -97,6 +98,7 @@ abstract class ConfigurationClassUtils {
 			metadata = new StandardAnnotationMetadata(beanClass, true);
 		}
 		else {
+			// 如果没有则使用metadtaReaderFactory工厂获取reader
 			try {
 				MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(className);
 				metadata = metadataReader.getAnnotationMetadata();
@@ -109,9 +111,11 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 如果是configuration注解标识的则是full
 		if (isFullConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 具体看内部方法则是lite
 		else if (isLiteConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
@@ -119,6 +123,7 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
+		// 处理order
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
 		Integer order = getOrder(metadata);
 		if (order != null) {

@@ -56,6 +56,7 @@ final class ConfigurationClass {
 	@Nullable
 	private String beanName;
 
+	// 主要处理内部类的情况，importedBy指代被谁导入的
 	private final Set<ConfigurationClass> importedBy = new LinkedHashSet<>(1);
 
 	private final Set<BeanMethod> beanMethods = new LinkedHashSet<>();
