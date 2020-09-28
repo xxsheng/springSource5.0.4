@@ -131,7 +131,7 @@ class ComponentScanAnnotationParser {
 			basePackages.add(ClassUtils.getPackageName(declaringClass));
 		}
 
-		// 当前类不进行解析，重复扫描？
+		// 当前类（配置类）不进行解析，重复扫描？
 		scanner.addExcludeFilter(new AbstractTypeHierarchyTraversingFilter(false, false) {
 			@Override
 			protected boolean matchClassName(String className) {

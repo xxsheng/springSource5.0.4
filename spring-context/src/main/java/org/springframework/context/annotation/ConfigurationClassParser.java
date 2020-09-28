@@ -246,6 +246,7 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 
+		// config类型的放入到此集合进行统一注入
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -287,10 +288,12 @@ class ConfigurationClassParser {
 				!this.conditionEvaluator.shouldSkip(sourceClass.getMetadata(), ConfigurationPhase.REGISTER_BEAN)) {
 			for (AnnotationAttributes componentScan : componentScans) {
 				// The config class is annotated with @ComponentScan -> perform the scan immediately
+				// 使用扫描器进行扫描,普通类型的bean是从这里注入进去的，后续注入将会直接跳过普通bean的bdf注入
 				Set<BeanDefinitionHolder> scannedBeanDefinitions =
 						this.componentScanParser.parse(componentScan, sourceClass.getMetadata().getClassName());
 				// Check the set of scanned definitions for any further config classes and parse recursively if needed
 				for (BeanDefinitionHolder holder : scannedBeanDefinitions) {
+					// 扫描出来的类如果是配置类，则进行递归扫描
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(
 							holder.getBeanDefinition(), this.metadataReaderFactory)) {
 						parse(holder.getBeanDefinition().getBeanClassName(), holder.getBeanName());
@@ -299,6 +302,7 @@ class ConfigurationClassParser {
 			}
 		}
 
+		// 处理configclass上的import注解
 		// Process any @Import annotations
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
@@ -511,6 +515,7 @@ class ConfigurationClassParser {
 	private Set<SourceClass> getImports(SourceClass sourceClass) throws IOException {
 		Set<SourceClass> imports = new LinkedHashSet<>();
 		Set<SourceClass> visited = new LinkedHashSet<>();
+		// 提取import类，递归获取该类上所有注解上import注解
 		collectImports(sourceClass, imports, visited);
 		return imports;
 	}
@@ -535,9 +540,11 @@ class ConfigurationClassParser {
 			for (SourceClass annotation : sourceClass.getAnnotations()) {
 				String annName = annotation.getMetadata().getClassName();
 				if (!annName.startsWith("java") && !annName.equals(Import.class.getName())) {
+					// 如果类似含有注解，一直递归到java元注解
 					collectImports(annotation, imports, visited);
 				}
 			}
+			// 解析import类
 			imports.addAll(sourceClass.getAnnotationAttributes(Import.class.getName(), "value"));
 		}
 	}
@@ -570,6 +577,7 @@ class ConfigurationClassParser {
 	private void processImports(ConfigurationClass configClass, SourceClass currentSourceClass,
 			Collection<SourceClass> importCandidates, boolean checkForCircularImports) throws IOException {
 
+		// 为空直接返回
 		if (importCandidates.isEmpty()) {
 			return;
 		}
