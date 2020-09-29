@@ -154,6 +154,7 @@ class ConfigurationClassBeanDefinitionReader {
 		ScopeMetadata scopeMetadata = scopeMetadataResolver.resolveScopeMetadata(configBeanDef);
 		configBeanDef.setScope(scopeMetadata.getScopeName());
 		String configBeanName = this.importBeanNameGenerator.generateBeanName(configBeanDef, this.registry);
+		// 解析import类上的通用注解
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(configBeanDef, metadata);
 
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(configBeanDef, configBeanName);

@@ -224,9 +224,11 @@ class ConfigurationClassParser {
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		if (existingClass != null) {
 			if (configClass.isImported()) {
+				// 如果已经存在的都是导入的则merge import后，使用新导入的
 				if (existingClass.isImported()) {
 					existingClass.mergeImportedBy(configClass);
 				}
+				// 如果俩个类来源于不同的，且已经存在的不是被导入的，则使用旧的
 				// Otherwise ignore new imported config class; existing non-imported class overrides it.
 				return;
 			}
@@ -582,29 +584,39 @@ class ConfigurationClassParser {
 			return;
 		}
 
+		// 防止循环导入（import注解中类含有import注解）
 		if (checkForCircularImports && isChainedImportOnStack(configClass)) {
 			this.problemReporter.error(new CircularImportProblem(configClass, this.importStack));
 		}
 		else {
+			// 每次解析configclass都要放入当前解析栈中，用来做后期处理
 			this.importStack.push(configClass);
 			try {
+				// 遍历import类
 				for (SourceClass candidate : importCandidates) {
 					if (candidate.isAssignable(ImportSelector.class)) {
 						// Candidate class is an ImportSelector -> delegate to it to determine imports
+						// loadclass
 						Class<?> candidateClass = candidate.loadClass();
+						// 实例化class
 						ImportSelector selector = BeanUtils.instantiateClass(candidateClass, ImportSelector.class);
+						// 调用后置处理
 						ParserStrategyUtils.invokeAwareMethods(
 								selector, this.environment, this.resourceLoader, this.registry);
+						// 如果是DeferrdImportSelector则稍后处理，放到集合中
 						if (this.deferredImportSelectors != null && selector instanceof DeferredImportSelector) {
 							this.deferredImportSelectors.add(
 									new DeferredImportSelectorHolder(configClass, (DeferredImportSelector) selector));
 						}
 						else {
+							// 否则直接处理，并且解析（此处一般import类的名字）
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames);
+							// 处理完import类的方法，使用得到的返回值递归调用一下，注入该类型，一直走到else分支
 							processImports(configClass, currentSourceClass, importSourceClasses, false);
 						}
 					}
+					// 如果是registar类型，则要把注入的registar类型放到当前config的registar类型中
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions
@@ -618,6 +630,7 @@ class ConfigurationClassParser {
 					else {
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
+						// 此处处理import注解中非import类以及import注解中的类返回的非import类型的类
 						this.importStack.registerImport(
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
 						processConfigurationClass(candidate.asConfigClass(configClass));
@@ -633,6 +646,7 @@ class ConfigurationClassParser {
 						configClass.getMetadata().getClassName() + "]", ex);
 			}
 			finally {
+				// 弹出，表示当前类已经解析完
 				this.importStack.pop();
 			}
 		}
@@ -834,6 +848,7 @@ class ConfigurationClassParser {
 			return new AssignableTypeFilter(clazz).match((MetadataReader) this.source, metadataReaderFactory);
 		}
 
+		// import的类都将加入此标签，用来表示当前类是被谁导入的，在统一处理configclasses的时候统一注入
 		public ConfigurationClass asConfigClass(ConfigurationClass importedBy) throws IOException {
 			if (this.source instanceof Class) {
 				return new ConfigurationClass((Class<?>) this.source, importedBy);

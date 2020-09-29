@@ -119,9 +119,11 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	private boolean localBeanNameGeneratorSet = false;
 
 	/* Using short class names as default bean names */
+	// 使用类名作为beanname
 	private BeanNameGenerator componentScanBeanNameGenerator = new AnnotationBeanNameGenerator();
 
 	/* Using fully qualified class names as default bean names */
+	// 全类名作为beanName，一般是configclass
 	private BeanNameGenerator importBeanNameGenerator = new AnnotationBeanNameGenerator() {
 		@Override
 		protected String buildDefaultBeanName(BeanDefinition definition) {
