@@ -248,7 +248,8 @@ class ConfigurationClassParser {
 		}
 		while (sourceClass != null);
 
-		// config类型的放入到此集合进行统一注入
+		// config类型的放入到此集合进行统一注入、
+		// config得父类不放入此处，父类解析过的不进行解析
 		this.configurationClasses.put(configClass, configClass);
 	}
 
@@ -304,11 +305,12 @@ class ConfigurationClassParser {
 			}
 		}
 
-		// 处理configclass上的import注解
+		// 处理configclass上的import注解(重点代码)
 		// Process any @Import annotations
 		processImports(configClass, sourceClass, getImports(sourceClass), true);
 
 		// Process any @ImportResource annotations
+		// 处理importResource
 		AnnotationAttributes importResource =
 				AnnotationConfigUtils.attributesFor(sourceClass.getMetadata(), ImportResource.class);
 		if (importResource != null) {
@@ -321,12 +323,14 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
+		// 处理@bean注解
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
 		}
 
 		// Process default methods on interfaces
+		// 处理当前类得接口类型上得@bean注解
 		processInterfaces(configClass, sourceClass);
 
 		// Process superclass, if any
@@ -334,6 +338,7 @@ class ConfigurationClassParser {
 			String superclass = sourceClass.getMetadata().getSuperClassName();
 			if (superclass != null && !superclass.startsWith("java") &&
 					!this.knownSuperclasses.containsKey(superclass)) {
+				// 解析过的父类加入集合中
 				this.knownSuperclasses.put(superclass, configClass);
 				// Superclass found, return its annotation metadata and recurse
 				return sourceClass.getSuperClass();
