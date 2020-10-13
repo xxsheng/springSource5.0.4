@@ -61,6 +61,7 @@ import org.springframework.util.StringValueResolver;
  * @see org.springframework.beans.factory.config.PlaceholderConfigurerSupport
  * @see org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
  */
+// propertySources初始化相关类
 public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerSupport implements EnvironmentAware {
 
 	/**
@@ -103,6 +104,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	 * @see #postProcessBeanFactory
 	 */
 	@Override
+	// 先初始化environment
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
 	}
@@ -125,6 +127,7 @@ public class PropertySourcesPlaceholderConfigurer extends PlaceholderConfigurerS
 	 * sources, and once set, the configurer makes no assumptions about adding additional sources.
 	 */
 	@Override
+	// 后置处理器统一处理中心
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		// 实例化propertySources,依赖于environment
 		if (this.propertySources == null) {
